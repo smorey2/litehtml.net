@@ -4,12 +4,12 @@ namespace Litehtml
 {
     public class nodeTest
     {
-        Document MakeDoc(string source) => document.createFromString(source.Replace("'", "\""), new container_test(), null, new context());
+        static Document MakeDocument(string source) => document.createFromString(source.Replace("'", "\""), new container_test(), null, new context());
 
         [Test]
         public void AttribTest()
         {
-            var document = MakeDoc(@"
+            var document = MakeDocument(@"
 <html>
 <body>
     <button onclick='myFunction()'>Try it</button>
@@ -43,7 +43,7 @@ namespace Litehtml
         [Test]
         public void NodemapTest()
         {
-            var document = MakeDoc(@"
+            var document = MakeDocument(@"
 <html>
 <body>
     <img id='myImg' alt='Flower' src='klematis.jpg' width='150' height='113'>
