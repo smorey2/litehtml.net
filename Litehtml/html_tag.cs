@@ -178,12 +178,12 @@ namespace Litehtml
             return res;
         }
 
-        protected override void select_all(css_selector selector, IList<element> res)
+        internal override void select_all(css_selector selector, IList<element> res)
         {
             if (select(selector) != 0)
                 res.Add(this);
 
-            foreach (html_tag el in _children)
+            foreach (var el in _children)
                 el.select_all(selector, res);
         }
 

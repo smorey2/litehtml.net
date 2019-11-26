@@ -1256,6 +1256,11 @@ namespace Litehtml
     /// </summary>
     public class HTMLCollection
     {
+        public HTMLCollection(IEnumerable<element> elements)
+        {
+
+        }
+
         /// <summary>
         /// Returns the number of elements in an HTMLCollection
         /// </summary>

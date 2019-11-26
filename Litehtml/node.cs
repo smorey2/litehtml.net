@@ -11,7 +11,13 @@ namespace Litehtml
         protected internal document _doc;
 
         public Node appendChild(Node node) => throw new NotImplementedException();
-        public NamedNodeMap<Attr> attributes => throw new NotImplementedException();
+        public NamedNodeMap<Attr> attributes
+        {
+            get
+            {
+                return null;
+            }
+        }
         public string baseURI => throw new NotImplementedException();
         public NodeList childNodes => throw new NotImplementedException();
         public Node cloneNode(bool deep) => throw new NotImplementedException();
@@ -47,26 +53,13 @@ namespace Litehtml
     /// </summary>
     public class attr : Attr
     {
+        public Node appendChild(Node node) => throw new NotImplementedException();
         public NamedNodeMap<Attr> attributes => throw new NotImplementedException();
         public string baseURI => throw new NotImplementedException();
         public NodeList childNodes => throw new NotImplementedException();
-        public Node firstChild => throw new NotImplementedException();
-        public Node lastChild => throw new NotImplementedException();
-        public Node nextSibling => throw new NotImplementedException();
-        public string nodeName => throw new NotImplementedException();
-        public int nodeType => throw new NotImplementedException();
-        public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Document ownerDocument => throw new NotImplementedException();
-        public Node parentNode => throw new NotImplementedException();
-        public string prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Node previousSibling => throw new NotImplementedException();
-        public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string name => throw new NotImplementedException();
-        public string value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool specified => throw new NotImplementedException();
-        public Node appendChild(Node node) => throw new NotImplementedException();
-        public Node cloneNode(bool deep = false) => throw new NotImplementedException();
+        public Node cloneNode(bool deep) => throw new NotImplementedException();
         public int compareDocumentPosition(Node node) => throw new NotImplementedException();
+        public Node firstChild => throw new NotImplementedException();
         public string getUserData(string key) => throw new NotImplementedException();
         public bool hasAttribute(string attributename) => throw new NotImplementedException();
         public bool hasAttributes() => throw new NotImplementedException();
@@ -74,15 +67,32 @@ namespace Litehtml
         public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
         public bool isEqualNode(Node node) => throw new NotImplementedException();
         public bool isSameNode(Node node) => throw new NotImplementedException();
+        public Node lastChild => throw new NotImplementedException();
         public string lookupNamespaceURI(string prefix) => throw new NotImplementedException();
         public string lookupPrefix(string namespaceURI) => throw new NotImplementedException();
+        public Node nextSibling => throw new NotImplementedException();
+        public string nodeName => throw new NotImplementedException();
+        public int nodeType => throw new NotImplementedException();
+        public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public void normalize() => throw new NotImplementedException();
+        public Document ownerDocument => throw new NotImplementedException();
+        public Node parentNode => throw new NotImplementedException();
+        public string prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Node previousSibling => throw new NotImplementedException();
         public Node removeChild(Node node) => throw new NotImplementedException();
         public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
         public void setUserData(string key, string data, string handler) => throw new NotImplementedException();
+        public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        //
+        public string name => throw new NotImplementedException();
+        public string value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool specified => throw new NotImplementedException();
     }
 
-    partial class element
+    /// <summary>
+    /// element
+    /// </summary>
+    partial class element : Element
     {
         public bool dispatchMouseEvent(PlatformMouseEvent platformEvent, string eventType, int detail, element relatedTarget)
         {
@@ -178,11 +188,11 @@ namespace Litehtml
 
         char Element.accessKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //NamedNodeMap Element.attributes => throw new NotImplementedException();
-        int Element.childElementCount => throw new NotImplementedException();
+        int Element.childElementCount => _children.Count;
         //NodeList Element.childNodes => throw new NotImplementedException();
-        HTMLCollection Element.children => throw new NotImplementedException();
+        HTMLCollection Element.children => new HTMLCollection(_children);
         DOMTokenList Element.classList => throw new NotImplementedException();
-        string Element.className { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string Element.className { get => get_attr("class"); set => set_attr("class", value); }
         int Element.clientHeight => throw new NotImplementedException();
         int Element.clientLeft => throw new NotImplementedException();
         int Element.clientTop => throw new NotImplementedException();
@@ -190,14 +200,14 @@ namespace Litehtml
         string Element.contentEditable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         string Element.dir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //Node Element.firstChild => throw new NotImplementedException();
-        Node Element.firstElementChild => throw new NotImplementedException();
-        string Element.id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Node Element.firstElementChild => _children.Count > 0 ? _children[0] : null;
+        string Element.id { get => get_attr("id"); set => set_attr("id", value); }
         string Element.innerHTML { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         string Element.innerText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         bool Element.isContentEditable => throw new NotImplementedException();
         string Element.lang { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //Node Element.lastChild => throw new NotImplementedException();
-        Node Element.lastElementChild => throw new NotImplementedException();
+        Node Element.lastElementChild => _children.Count > 0 ? _children[_children.Count - 1] : null;
         string Element.namespaceURI => throw new NotImplementedException();
         //Node Element.nextSibling => throw new NotImplementedException();
         Node Element.nextElementSibling => throw new NotImplementedException();
@@ -211,7 +221,7 @@ namespace Litehtml
         int Element.offsetTop => throw new NotImplementedException();
         //Document Element.ownerDocument => throw new NotImplementedException();
         //Node Element.parentNode => throw new NotImplementedException();
-        Element Element.parentElement => throw new NotImplementedException();
+        Element Element.parentElement => _parent;
         //Node Element.previousSibling => throw new NotImplementedException();
         Node Element.previousElementSibling => throw new NotImplementedException();
         int Element.scrollHeight => throw new NotImplementedException();
@@ -220,7 +230,7 @@ namespace Litehtml
         int Element.scrollWidth => throw new NotImplementedException();
         Style Element.style => throw new NotImplementedException();
         int Element.tabIndex { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        string Element.tagName => throw new NotImplementedException();
+        string Element.tagName => get_tagName();
         //string Element.textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         string Element.title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         void Element.addEventListener(string @event, string function, bool useCapture) => addEventListener(@event, null, new EventListenerOptions { capture = useCapture });
@@ -232,11 +242,28 @@ namespace Litehtml
         bool Element.contains(Node node) => throw new NotImplementedException();
         void Element.exitFullscreen() => throw new NotImplementedException();
         void Element.focus() => throw new NotImplementedException();
-        string Element.getAttribute(string attributename) => throw new NotImplementedException();
+        string Element.getAttribute(string attributename) => get_attr(attributename);
         Attr Element.getAttributeNode(string attributename) => throw new NotImplementedException();
         Rect Element.getBoundingClientRect() => throw new NotImplementedException();
-        NodeList Element.getElementsByClassName(string classname) => throw new NotImplementedException();
-        NodeList Element.getElementsByTagName(string tagname) => throw new NotImplementedException();
+        NodeList Element.getElementsByClassName(string classname)
+        {
+            var elem = new css_element_selector();
+            var attr = new css_attribute_selector
+            {
+                val = classname,
+                condition = attr_select_condition.equal,
+                attribute = "class"
+            };
+            elem._attrs.Add(attr);
+            var sel = new css_selector(elem);
+            return new NodeList(select_all(sel));
+        }
+        NodeList Element.getElementsByTagName(string tagname)
+        {
+            var elem = new css_element_selector { _tag = tagname.ToLowerInvariant() };
+            var sel = new css_selector(elem);
+            return new NodeList(select_all(sel));
+        }
         //bool Element.hasAttribute(string attributename) => throw new NotImplementedException();
         //bool Element.hasAttributes() => throw new NotImplementedException();
         //bool Element.hasChildNodes() => throw new NotImplementedException();
@@ -248,8 +275,8 @@ namespace Litehtml
         //bool Element.isEqualNode(Node node) => throw new NotImplementedException();
         //bool Element.isSameNode(Node node) => throw new NotImplementedException();
         //void Element.normalize() => throw new NotImplementedException();
-        Element Element.querySelector(string selectors) => throw new NotImplementedException();
-        NodeList Element.querySelectorAll(string selectors) => throw new NotImplementedException();
+        Element Element.querySelector(string selectors) => select_one(selectors);
+        NodeList Element.querySelectorAll(string selectors) => new NodeList(select_all(selectors));
         void Element.removeAttribute(string attributename) => throw new NotImplementedException();
         Attr Element.removeAttributeNode(Attr attributenode) => throw new NotImplementedException();
         //Node Element.removeChild(Node node) => throw new NotImplementedException();
@@ -257,8 +284,94 @@ namespace Litehtml
         //Node Element.replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
         void Element.requestFullscreen() => throw new NotImplementedException();
         void Element.scrollIntoView(bool alignTo) => throw new NotImplementedException();
-        void Element.setAttribute(string attributename, string attributevalue) => throw new NotImplementedException();
+        void Element.setAttribute(string attributename, string attributevalue) => set_attr(attributename, attributevalue);
         Attr Element.setAttributeNode(Attr attributenode) => throw new NotImplementedException();
         string Element.toString() => throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// document
+    /// </summary>
+    partial class document
+    {
+        internal object windowProxy;
+
+        Element Document.activeElement => throw new NotImplementedException();
+        HTMLCollection Document.anchors => throw new NotImplementedException();
+        HTMLCollection Document.applets => throw new NotImplementedException();
+        string Document.baseURI => throw new NotImplementedException();
+        Element Document.body { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string Document.cookie { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string Document.characterSet => throw new NotImplementedException();
+        Window Document.defaultView => throw new NotImplementedException();
+        string Document.designMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DocumentType Document.doctype => throw new NotImplementedException();
+        Element Document.documentElement => throw new NotImplementedException();
+        string Document.documentURI { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string Document.domain => throw new NotImplementedException();
+        HTMLCollection Document.embeds => throw new NotImplementedException();
+        HTMLCollection Document.forms => throw new NotImplementedException();
+        Element Document.fullscreenElement => throw new NotImplementedException();
+        Element Document.head => throw new NotImplementedException();
+        HTMLCollection Document.images => throw new NotImplementedException();
+        DocumentImplementation Document.implementation => throw new NotImplementedException();
+        string Document.inputEncoding => throw new NotImplementedException();
+        DateTime Document.lastModified => throw new NotImplementedException();
+        HTMLCollection Document.links => throw new NotImplementedException();
+        string Document.readyState => throw new NotImplementedException();
+        string Document.referrer => throw new NotImplementedException();
+        HTMLCollection Document.scripts => throw new NotImplementedException();
+        bool Document.strictErrorChecking { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string Document.title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string Document.URL => throw new NotImplementedException();
+        void Document.addEventListener(string @event, string function, bool useCapture) => throw new NotImplementedException();
+        Node Document.adoptNode(Node node) => throw new NotImplementedException();
+        void Document.close() => throw new NotImplementedException();
+        Node Document.createAttribute(string attributename) => throw new NotImplementedException();
+        Node Document.createComment(string text) => throw new NotImplementedException();
+        DocumentFragment Document.createDocumentFragment() => throw new NotImplementedException();
+        Element Document.createElement(string nodename) => throw new NotImplementedException();
+        Event Document.createEvent(string type) => throw new NotImplementedException();
+        Node Document.createTextNode(string text) => throw new NotImplementedException();
+        bool Document.execCommand(string command, bool showUI, object value) => throw new NotImplementedException();
+        bool Document.fullscreenEnabled() => throw new NotImplementedException();
+        Element Document.getElementById(string elementID)
+        {
+            var elem = new css_element_selector();
+            var attr = new css_attribute_selector
+            {
+                val = elementID,
+                condition = attr_select_condition.equal,
+                attribute = "id"
+            };
+            elem._attrs.Add(attr);
+            var sel = new css_selector(elem);
+            return _root.select_one(sel);
+        }
+        NodeList Document.getElementsByClassName(string classname) => ((Element)_root).getElementsByClassName(classname);
+        NodeList Document.getElementsByName(string name)
+        {
+            var elem = new css_element_selector();
+            var attr = new css_attribute_selector
+            {
+                val = name,
+                condition = attr_select_condition.equal,
+                attribute = "name"
+            };
+            elem._attrs.Add(attr);
+            var sel = new css_selector(elem);
+            return new NodeList(_root.select_all(sel));
+        }
+        NodeList Document.getElementsByTagName(string tagname) => ((Element)_root).getElementsByTagName(tagname);
+        bool Document.hasFocus() => throw new NotImplementedException();
+        Node Document.importNode(Node node, bool deep) => throw new NotImplementedException();
+        void Document.normalize() => throw new NotImplementedException();
+        void Document.open(string MIMEtype, string replace) => throw new NotImplementedException();
+        Element Document.querySelector(string selectors) => throw new NotImplementedException();
+        NodeList Document.querySelectorAll(string selectors) => throw new NotImplementedException();
+        void Document.removeEventListener(string @event, string function, bool useCapture) => throw new NotImplementedException();
+        Node Document.renameNode(Node node, string namespaceURI, string nodename) => throw new NotImplementedException();
+        void Document.write(params object[] args) => throw new NotImplementedException();
+        void Document.writeln(params object[] args) => throw new NotImplementedException();
     }
 }

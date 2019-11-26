@@ -57,7 +57,7 @@ namespace Litehtml
         string _lang;
         string _culture;
 
-        public document(Icontainer container, script_engine script, context ctx)
+        public document(Icontainer container, script_engine script, context ctx) : base()
         {
             _container = container;
             _script = script;

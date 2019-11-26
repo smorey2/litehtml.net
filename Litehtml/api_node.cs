@@ -286,7 +286,18 @@ namespace Litehtml
     /// https://www.w3schools.com/xml/dom_nodelist.asp
     /// https://www.w3schools.com/js/js_htmldom_nodelist.asp
     /// </summary>
-    public class NodeList : List<Node> { }
+    public class NodeList
+    {
+        readonly List<Node> items = new List<Node>();
+
+        public NodeList(IEnumerable<element> elements = null)
+        {
+            if (elements != null)
+                items.AddRange(elements);
+        }
+
+        public Node this[int index] => items[index];
+    }
 
     /// <summary>
     /// NamedNodeMap

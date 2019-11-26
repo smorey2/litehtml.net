@@ -234,11 +234,18 @@ namespace Litehtml
         public css_selector(css_selector val)
         {
             _right = val._right;
-            _left = val._left; //: shared?
+            _left = val._left;
             _combinator = val._combinator;
             _specificity = val._specificity;
             _order = val._order;
             _media_query = val._media_query;
+        }
+        public css_selector(css_element_selector right)
+        {
+            _right = right;
+            _media_query = null;
+            _combinator = css_combinator.descendant;
+            _order = 0;
         }
 
         public bool parse(string text)

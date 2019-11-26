@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Litehtml
 {
+    [DebuggerDisplay("elm, children={_children.Count}")]
     public partial class element : EventTarget, Element
     {
         protected internal element _parent;
@@ -253,7 +255,7 @@ namespace Litehtml
 
         public virtual IList<element> select_all(string selector) => new element[0];
         public virtual IList<element> select_all(css_selector selector) => new element[0];
-        protected virtual void select_all(css_selector selector, IList<element> res) { }
+        internal virtual void select_all(css_selector selector, IList<element> res) { }
 
         public virtual element select_one(string selector) => null;
         public virtual element select_one(css_selector selector) => null;
