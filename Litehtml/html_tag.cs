@@ -24,7 +24,7 @@ namespace Litehtml
         protected List<string> _class_values = new List<string>();
         protected string _tag;
         protected style _style = new style();
-        protected Dictionary<string, string> _attrs = new Dictionary<string, string>();
+        internal Dictionary<string, string> _attrs = new Dictionary<string, string>();
         protected vertical_align _vertical_align;
         protected text_align _text_align;
         protected style_display _display;

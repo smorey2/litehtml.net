@@ -23,20 +23,24 @@ namespace Litehtml
             // https://www.w3schools.com/jsref/prop_attr_name.asp
             {
                 var x = document.getElementsByTagName("BUTTON")[0].attributes[0].name;
+                Assert.AreEqual("onclick", x);
             }
 
             // https://www.w3schools.com/jsref/prop_attr_value.asp
             {
                 var x = document.getElementsByTagName("BUTTON")[0].attributes[0].value;
+                Assert.AreEqual("myFunction()", x);
             }
             {
                 var x = document.getElementsByTagName("IMG")[0] as Element;
                 x.getAttributeNode("src").value = "pic_bulbon.gif";
+                Assert.AreEqual("pic_bulbon.gif", x.getAttributeNode("src").value);
             }
 
             // https://www.w3schools.com/jsref/prop_attr_specified.asp
             {
                 var x = document.getElementById("demo").attributes[0].specified;
+                Assert.IsTrue(x);
             }
         }
 

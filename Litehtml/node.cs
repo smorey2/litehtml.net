@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Litehtml
 {
@@ -8,29 +9,21 @@ namespace Litehtml
     /// <seealso cref="Litehtml.Node" />
     public class node : Node
     {
-        protected internal document _doc;
+        readonly element _t;
+        public node() => _t = (element)this;
 
         public Node appendChild(Node node) => throw new NotImplementedException();
-        public NamedNodeMap<Attr> attributes
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public string baseURI => throw new NotImplementedException();
-        public NodeList childNodes => throw new NotImplementedException();
-        public Node cloneNode(bool deep) => throw new NotImplementedException();
+        public NamedNodeMap attributes => new NamedNodeMap(((html_tag)_t)._attrs);
+        public string baseURI => "base";
+        public NodeList childNodes => new NodeList(_t._children);
+        public Node cloneNode(bool deep = false) => throw new NotImplementedException();
         public int compareDocumentPosition(Node node) => throw new NotImplementedException();
-        public Node firstChild => throw new NotImplementedException();
-        public string getUserData(string key) => throw new NotImplementedException();
-        public bool hasAttribute(string attributename) => throw new NotImplementedException();
-        public bool hasAttributes() => throw new NotImplementedException();
-        public bool hasChildNodes() => throw new NotImplementedException();
+        public Node firstChild => _t._children[0];
+        public bool hasChildNodes() => _t._children.Count > 0;
         public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
         public bool isEqualNode(Node node) => throw new NotImplementedException();
         public bool isSameNode(Node node) => throw new NotImplementedException();
-        public Node lastChild => throw new NotImplementedException();
+        public Node lastChild => _t._children.Count > 0 ? _t._children[_t._children.Count - 1] : null;
         public string lookupNamespaceURI(string prefix) => throw new NotImplementedException();
         public string lookupPrefix(string namespaceURI) => throw new NotImplementedException();
         public Node nextSibling => throw new NotImplementedException();
@@ -44,7 +37,6 @@ namespace Litehtml
         public Node previousSibling => throw new NotImplementedException();
         public Node removeChild(Node node) => throw new NotImplementedException();
         public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
-        public void setUserData(string key, string data, string handler) => throw new NotImplementedException();
         public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
@@ -53,16 +45,21 @@ namespace Litehtml
     /// </summary>
     public class attr : Attr
     {
-        public Node appendChild(Node node) => throw new NotImplementedException();
-        public NamedNodeMap<Attr> attributes => throw new NotImplementedException();
-        public string baseURI => throw new NotImplementedException();
-        public NodeList childNodes => throw new NotImplementedException();
-        public Node cloneNode(bool deep) => throw new NotImplementedException();
+        readonly Dictionary<string, string> _attrs;
+        readonly string _name;
+
+        public attr(Dictionary<string, string> attrs, string name)
+        {
+            _attrs = attrs;
+            _name = name;
+        }
+        public Node appendChild(Node node) => throw new NotSupportedException();
+        public NamedNodeMap attributes => NamedNodeMap.Empty;
+        public string baseURI => "base";
+        public NodeList childNodes => new NodeList();
+        public Node cloneNode(bool deep = false) => throw new NotImplementedException();
         public int compareDocumentPosition(Node node) => throw new NotImplementedException();
-        public Node firstChild => throw new NotImplementedException();
-        public string getUserData(string key) => throw new NotImplementedException();
-        public bool hasAttribute(string attributename) => throw new NotImplementedException();
-        public bool hasAttributes() => throw new NotImplementedException();
+        public Node firstChild => null;
         public bool hasChildNodes() => throw new NotImplementedException();
         public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
         public bool isEqualNode(Node node) => throw new NotImplementedException();
@@ -70,7 +67,7 @@ namespace Litehtml
         public Node lastChild => throw new NotImplementedException();
         public string lookupNamespaceURI(string prefix) => throw new NotImplementedException();
         public string lookupPrefix(string namespaceURI) => throw new NotImplementedException();
-        public Node nextSibling => throw new NotImplementedException();
+        public Node nextSibling => null;
         public string nodeName => throw new NotImplementedException();
         public int nodeType => throw new NotImplementedException();
         public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -78,15 +75,14 @@ namespace Litehtml
         public Document ownerDocument => throw new NotImplementedException();
         public Node parentNode => throw new NotImplementedException();
         public string prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Node previousSibling => throw new NotImplementedException();
+        public Node previousSibling => null;
         public Node removeChild(Node node) => throw new NotImplementedException();
         public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
-        public void setUserData(string key, string data, string handler) => throw new NotImplementedException();
         public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //
-        public string name => throw new NotImplementedException();
-        public string value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool specified => throw new NotImplementedException();
+        public string name => _name;
+        public string value { get => _attrs[_name]; set => _attrs[_name] = value; }
+        public bool specified => _attrs[_name] != null;
     }
 
     /// <summary>
@@ -243,7 +239,7 @@ namespace Litehtml
         void Element.exitFullscreen() => throw new NotImplementedException();
         void Element.focus() => throw new NotImplementedException();
         string Element.getAttribute(string attributename) => get_attr(attributename);
-        Attr Element.getAttributeNode(string attributename) => throw new NotImplementedException();
+        Attr Element.getAttributeNode(string attributename) => new attr(((html_tag)this)._attrs, attributename);
         Rect Element.getBoundingClientRect() => throw new NotImplementedException();
         NodeList Element.getElementsByClassName(string classname)
         {
@@ -264,8 +260,8 @@ namespace Litehtml
             var sel = new css_selector(elem);
             return new NodeList(select_all(sel));
         }
-        //bool Element.hasAttribute(string attributename) => throw new NotImplementedException();
-        //bool Element.hasAttributes() => throw new NotImplementedException();
+        bool Element.hasAttribute(string attributename) => throw new NotImplementedException();
+        bool Element.hasAttributes() => throw new NotImplementedException();
         //bool Element.hasChildNodes() => throw new NotImplementedException();
         void Element.insertAdjacentElement(string position, Element element) => throw new NotImplementedException();
         void Element.insertAdjacentHTML(string position, string text) => throw new NotImplementedException();

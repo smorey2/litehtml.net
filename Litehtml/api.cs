@@ -748,22 +748,22 @@ namespace Litehtml
         /// <returns></returns>
         NodeList getElementsByTagName(string tagname);
 
-        ///// <summary>
-        ///// Returns true if an element has the specified attribute, otherwise false
-        ///// </summary>
-        ///// <param name="attributename">The attributename.</param>
-        ///// <returns>
-        /////   <c>true</c> if the specified attributename has attribute; otherwise, <c>false</c>.
-        ///// </returns>
-        //bool hasAttribute(string attributename); //: Node
+        /// <summary>
+        /// Returns true if an element has the specified attribute, otherwise false
+        /// </summary>
+        /// <param name="attributename">The attributename.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified attributename has attribute; otherwise, <c>false</c>.
+        /// </returns>
+        bool hasAttribute(string attributename);
 
-        ///// <summary>
-        ///// Returns true if an element has any attributes, otherwise false
-        ///// </summary>
-        ///// <returns>
-        /////   <c>true</c> if this instance has attributes; otherwise, <c>false</c>.
-        ///// </returns>
-        //bool hasAttributes(); //: Node
+        /// <summary>
+        /// Returns true if an element has any attributes, otherwise false
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance has attributes; otherwise, <c>false</c>.
+        /// </returns>
+        bool hasAttributes();
 
         ///// <summary>
         ///// Returns true if an element has any child nodes, otherwise false
@@ -1258,7 +1258,6 @@ namespace Litehtml
     {
         public HTMLCollection(IEnumerable<element> elements)
         {
-
         }
 
         /// <summary>
