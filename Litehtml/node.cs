@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Litehtml
@@ -9,35 +10,35 @@ namespace Litehtml
     /// <seealso cref="Litehtml.Node" />
     public class node : Node
     {
-        readonly element _t;
-        public node() => _t = (element)this;
+        readonly element _elem;
+        public node() => _elem = (element)this;
 
-        public Node appendChild(Node node) => throw new NotImplementedException();
-        public NamedNodeMap attributes => new NamedNodeMap(((html_tag)_t)._attrs);
-        public string baseURI => "base";
-        public NodeList childNodes => new NodeList(_t._children);
-        public Node cloneNode(bool deep = false) => throw new NotImplementedException();
-        public int compareDocumentPosition(Node node) => throw new NotImplementedException();
-        public Node firstChild => _t._children[0];
-        public bool hasChildNodes() => _t._children.Count > 0;
-        public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
-        public bool isEqualNode(Node node) => throw new NotImplementedException();
-        public bool isSameNode(Node node) => throw new NotImplementedException();
-        public Node lastChild => _t._children.Count > 0 ? _t._children[_t._children.Count - 1] : null;
-        public string lookupNamespaceURI(string prefix) => throw new NotImplementedException();
-        public string lookupPrefix(string namespaceURI) => throw new NotImplementedException();
-        public Node nextSibling => throw new NotImplementedException();
-        public string nodeName => throw new NotImplementedException();
-        public int nodeType => throw new NotImplementedException();
-        public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public void normalize() => throw new NotImplementedException();
-        public Document ownerDocument => throw new NotImplementedException();
-        public Node parentNode => throw new NotImplementedException();
-        public string prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Node previousSibling => throw new NotImplementedException();
-        public Node removeChild(Node node) => throw new NotImplementedException();
-        public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
-        public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Node Node.appendChild(Node node) => throw new NotImplementedException();
+        NamedNodeMap Node.attributes => new NamedNodeMap(((html_tag)_elem)._attrs);
+        string Node.baseURI => "base";
+        NodeList Node.childNodes => new NodeList(_elem._children);
+        Node Node.cloneNode(bool deep) => throw new NotImplementedException();
+        int Node.compareDocumentPosition(Node node) => throw new NotImplementedException();
+        Node Node.firstChild => _elem._children[0];
+        bool Node.hasChildNodes() => _elem._children.Count > 0;
+        bool Node.isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
+        bool Node.isEqualNode(Node node) => throw new NotImplementedException();
+        bool Node.isSameNode(Node node) => throw new NotImplementedException();
+        Node Node.lastChild => _elem._children.Count > 0 ? _elem._children[_elem._children.Count - 1] : null;
+        string Node.lookupNamespaceURI(string prefix) => throw new NotImplementedException();
+        string Node.lookupPrefix(string namespaceURI) => throw new NotImplementedException();
+        Node Node.nextSibling => throw new NotImplementedException();
+        string Node.nodeName => throw new NotImplementedException();
+        int Node.nodeType => throw new NotImplementedException();
+        string Node.nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        void Node.normalize() => throw new NotImplementedException();
+        Document Node.ownerDocument => throw new NotImplementedException();
+        Node Node.parentNode => throw new NotImplementedException();
+        string Node.prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Node Node.previousSibling => throw new NotImplementedException();
+        Node Node.removeChild(Node node) => throw new NotImplementedException();
+        Node Node.replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
+        string Node.textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
     /// <summary>
@@ -53,36 +54,150 @@ namespace Litehtml
             _attrs = attrs;
             _name = name;
         }
-        public Node appendChild(Node node) => throw new NotSupportedException();
-        public NamedNodeMap attributes => NamedNodeMap.Empty;
-        public string baseURI => "base";
-        public NodeList childNodes => new NodeList();
-        public Node cloneNode(bool deep = false) => throw new NotImplementedException();
-        public int compareDocumentPosition(Node node) => throw new NotImplementedException();
-        public Node firstChild => null;
-        public bool hasChildNodes() => throw new NotImplementedException();
-        public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
-        public bool isEqualNode(Node node) => throw new NotImplementedException();
-        public bool isSameNode(Node node) => throw new NotImplementedException();
-        public Node lastChild => throw new NotImplementedException();
-        public string lookupNamespaceURI(string prefix) => throw new NotImplementedException();
-        public string lookupPrefix(string namespaceURI) => throw new NotImplementedException();
-        public Node nextSibling => null;
-        public string nodeName => throw new NotImplementedException();
-        public int nodeType => throw new NotImplementedException();
-        public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public void normalize() => throw new NotImplementedException();
-        public Document ownerDocument => throw new NotImplementedException();
-        public Node parentNode => throw new NotImplementedException();
-        public string prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Node previousSibling => null;
-        public Node removeChild(Node node) => throw new NotImplementedException();
-        public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
-        public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Node Node.appendChild(Node node) => throw new NotSupportedException();
+        NamedNodeMap Node.attributes => NamedNodeMap.Empty;
+        string Node.baseURI => "base";
+        NodeList Node.childNodes => new NodeList();
+        Node Node.cloneNode(bool deep) => throw new NotImplementedException();
+        int Node.compareDocumentPosition(Node node) => throw new NotImplementedException();
+        Node Node.firstChild => null;
+        bool Node.hasChildNodes() => throw new NotImplementedException();
+        bool Node.isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
+        bool Node.isEqualNode(Node node) => throw new NotImplementedException();
+        bool Node.isSameNode(Node node) => throw new NotImplementedException();
+        Node Node.lastChild => throw new NotImplementedException();
+        string Node.lookupNamespaceURI(string prefix) => throw new NotImplementedException();
+        string Node.lookupPrefix(string namespaceURI) => throw new NotImplementedException();
+        Node Node.nextSibling => null;
+        string Node.nodeName => throw new NotImplementedException();
+        int Node.nodeType => throw new NotImplementedException();
+        string Node.nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        void Node.normalize() => throw new NotImplementedException();
+        Document Node.ownerDocument => throw new NotImplementedException();
+        Node Node.parentNode => throw new NotImplementedException();
+        string Node.prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Node Node.previousSibling => null;
+        Node Node.removeChild(Node node) => throw new NotImplementedException();
+        Node Node.replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
+        string Node.textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //
         public string name => _name;
         public string value { get => _attrs[_name]; set => _attrs[_name] = value; }
         public bool specified => _attrs[_name] != null;
+    }
+
+    partial class Event
+    {
+        public object Target { get; set; }
+        public object CurrentTarget { get; set; }
+        public char EventPhase { get; set; }
+
+        public void resetBeforeDispatch()
+        {
+        }
+
+        public void resetAfterDispatch()
+        {
+        }
+    }
+
+    public class EventTarget : node
+    {
+        readonly Dictionary<string, List<EventEntry>> _eventEntries = new Dictionary<string, List<EventEntry>>();
+
+        public delegate void EventListener(object ctx, Event e);
+
+        enum EventInvokePhase
+        {
+            Capturing,
+            Bubbling
+        }
+
+        struct EventEntry
+        {
+            public EventListener listener;
+            public EventListenerOptions options;
+            public EventEntry(EventListener l, EventListenerOptions o) { listener = l; options = o; }
+        }
+
+        public class EventListenerOptions
+        {
+            public bool capture;
+            public bool passive;
+            public bool once;
+        }
+
+        public bool addEventListener(string eventType, EventListener listener, EventListenerOptions options)
+        {
+            lock (this)
+            {
+                if (_eventEntries.TryGetValue(eventType, out var eventEntry))
+                {
+                    if (eventEntry.Any(x => x.options.capture == options.capture))
+                        return false;
+                    _eventEntries[eventType].Add(new EventEntry(listener, options));
+                    return true;
+                }
+                _eventEntries[eventType] = new List<EventEntry> { new EventEntry(listener, options) };
+                return true;
+            }
+        }
+
+        public bool removeEventListener(string eventType, EventListener listener, EventListenerOptions options)
+        {
+            lock (this)
+            {
+                if (_eventEntries.TryGetValue(eventType, out var eventEntry))
+                {
+                    var r = eventEntry.RemoveAll(x => x.options.capture == options.capture) > 0;
+                    if (eventEntry.Count == 0)
+                        _eventEntries.Remove(eventType);
+                    return r;
+                }
+            }
+            return false;
+        }
+
+        protected void dispatchEvent(Event ev)
+        {
+            ev.Target = this;
+            ev.CurrentTarget = this;
+            ev.EventPhase = '@';
+            ev.resetBeforeDispatch();
+            fireEventListeners(ev, EventInvokePhase.Capturing);
+            fireEventListeners(ev, EventInvokePhase.Bubbling);
+            ev.resetAfterDispatch();
+        }
+
+        void fireEventListeners(Event ev, EventInvokePhase phase)
+        {
+            if (_eventEntries.TryGetValue(ev.type, out var eventEntry))
+                invokeEventListeners(ev, eventEntry, phase);
+        }
+
+        void invokeEventListeners(Event ev, IList<EventEntry> listeners, EventInvokePhase phase)
+        {
+            //Debug.Assert(listeners.Count != 0);
+            var ctx = (object)null; //scriptExecutionContext
+            foreach (var registeredListener in listeners)
+            {
+                if (phase == EventInvokePhase.Capturing && !registeredListener.options.capture)
+                    continue;
+                if (phase == EventInvokePhase.Bubbling && registeredListener.options.capture)
+                    continue;
+                // If stopImmediatePropagation has been called, we just break out immediately, without handling any more events on this target.
+                if (ev._immediatePropagationStopped)
+                    break;
+                // Do this before invocation to avoid reentrancy issues.
+                if (registeredListener.options.once)
+                    removeEventListener(ev.type, registeredListener.listener, registeredListener.options);
+                if (registeredListener.options.passive)
+                    ev._inPassiveListener = true;
+                registeredListener.listener(ctx, ev);
+                if (registeredListener.options.passive)
+                    ev._inPassiveListener = false;
+            }
+        }
     }
 
     /// <summary>

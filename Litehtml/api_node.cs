@@ -249,15 +249,10 @@ namespace Litehtml
     /// </summary>
     public class NodeList
     {
-        readonly List<Node> items = new List<Node>();
-
-        public NodeList(IEnumerable<element> elements = null)
-        {
-            if (elements != null)
-                items.AddRange(elements);
-        }
-
-        public Node this[int index] => items[index];
+        readonly IList<element> items;
+        public NodeList() { }
+        public NodeList(IList<element> elements) => items = elements;
+        public Node this[int index] => items?[index];
     }
 
     /// <summary>
