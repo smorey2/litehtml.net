@@ -540,15 +540,114 @@ namespace Litehtml
     /// Element
     /// https://www.w3schools.com/jsref/dom_obj_all.asp
     /// </summary>
-    public interface Element : Node
+    public class Element : Node, EventTarget
     {
+        readonly EventSystem _events = new EventSystem();
+
+        public Element() => _elem = (element)this;
+
+        #region Event
+
+        public bool dispatchMouseEvent(PlatformMouseEvent platformEvent, string eventType, int detail, element relatedTarget)
+        {
+            var mouseEvent = new MouseEvent(eventType, _elem._doc.windowProxy, platformEvent, detail, relatedTarget);
+            var didNotSwallowEvent = true;
+            //    //Debug.Assert(mouseEvent.target == null || mouseEvent.target != relatedTarget);
+            //    dispatchEvent(mouseEvent);
+            //    if (mouseEvent.defaultPrevented || mouseEvent.defaultHandled)
+            //        didNotSwallowEvent = false;
+
+            //    //if (mouseEvent->type() == eventNames().clickEvent && mouseEvent->detail() == 2)
+            //    //{
+            //    //    // Special case: If it's a double click event, we also send the dblclick event. This is not part
+            //    //    // of the DOM specs, but is used for compatibility with the ondblclick="" attribute. This is treated
+            //    //    // as a separate event in other DOM-compliant browsers like Firefox, and so we do the same.
+            //    //    // FIXME: Is it okay that mouseEvent may have been mutated by scripts via initMouseEvent in dispatchEvent above?
+            //    //    Ref<MouseEvent> doubleClickEvent = MouseEvent::create(eventNames().dblclickEvent,
+            //    //        mouseEvent->bubbles() ? Event::CanBubble::Yes : Event::CanBubble::No,
+            //    //        mouseEvent->cancelable() ? Event::IsCancelable::Yes : Event::IsCancelable::No,
+            //    //        Event::IsComposed::Yes,
+            //    //        mouseEvent->view(), mouseEvent->detail(),
+            //    //        mouseEvent->screenX(), mouseEvent->screenY(), mouseEvent->clientX(), mouseEvent->clientY(),
+            //    //        mouseEvent->modifierKeys(), mouseEvent->button(), mouseEvent->buttons(), mouseEvent->syntheticClickType(), relatedTarget);
+
+            //    //    if (mouseEvent->defaultHandled())
+            //    //        doubleClickEvent->setDefaultHandled();
+
+            //    //    dispatchEvent(doubleClickEvent);
+            //    //    if (doubleClickEvent->defaultHandled() || doubleClickEvent->defaultPrevented())
+            //    //        return false;
+            //    //}
+            return didNotSwallowEvent;
+        }
+
+        //public bool dispatchWheelEvent(PlatformWheelEvent platformEvent)
+        //{
+        //    var @event = new WheelEvent(platformEvent, document().windowProxy());
+
+        //    // Events with no deltas are important because they convey platform information about scroll gestures
+        //    // and momentum beginning or ending. However, those events should not be sent to the DOM since some
+        //    // websites will break. They need to be dispatched because dispatching them will call into the default
+        //    // event handler, and our platform code will correctly handle the phase changes. Calling stopPropogation()
+        //    // will prevent the event from being sent to the DOM, but will still call the default event handler.
+        //    // FIXME: Move this logic into WheelEvent::create.
+        //    if (!platformEvent.deltaX && !platformEvent.deltaY)
+        //        @event.stopImmediatePropagation();
+
+        //    dispatchEvent(@event);
+        //    return !@event.defaultPrevented && !@event.defaultHandled;
+        //}
+
+        //public bool dispatchKeyEvent(PlatformKeyboardEvent platformEvent)
+        //{
+        //    var event_ = new KeyboardEvent(platformEvent, document().windowProxy());
+
+        //    var frame = document().frame();
+        //    if (frame != null)
+        //        if (frame.eventHandler().accessibilityPreventsEventPropagation(event_))
+        //            event_.stopImmediatePropagation();
+
+        //    dispatchEvent(event_);
+        //    return !event_.defaultPrevented && !event_.defaultHandled;
+        //}
+
+        //void dispatchFocusInEvent(string eventType, element oldFocusedElement)
+        //{
+        //    //Debug.Assert(eventType == eventNames().focusinEvent || eventType == eventNames().DOMFocusInEvent);
+        //    dispatchScopedEvent(new FocusEvent(eventType, Event.CanBubble.Yes, Event.IsCancelable.No, document().windowProxy(), 0, oldFocusedElement));
+        //}
+
+        //void dispatchFocusOutEvent(string eventType, element newFocusedElement)
+        //{
+        //    //Debug.Assert(eventType == eventNames().focusoutEvent || eventType == eventNames().DOMFocusOutEvent);
+        //    dispatchScopedEvent(new FocusEvent(eventType, Event.CanBubble.Yes, Event.IsCancelable.No, document().windowProxy(), 0, newFocusedElement));
+        //}
+
+        //void dispatchFocusEvent(element oldFocusedElement, FocusDirection x)
+        //{
+        //    var page = document().page();
+        //    if (page != null)
+        //        page.chrome().client().elementDidFocus(this);
+        //    dispatchEvent(new FocusEvent(eventNames().focusEvent, Event.CanBubble.No, Event.IsCancelable.No, document().windowProxy(), 0, WTFMove(oldFocusedElement)));
+        //}
+
+        //void dispatchBlurEvent(element newFocusedElement)
+        //{
+        //    var page = document().page();
+        //    if (page != null)
+        //        page.chrome().client().elementDidBlur(this);
+        //    dispatchEvent(new FocusEvent(eventNames().blurEvent, Event.CanBubble.No, Event.IsCancelable.No, document().windowProxy(), 0, WTFMove(newFocusedElement)));
+        //}
+
+        #endregion
+
         /// <summary>
         /// Gets or sets the access key.
         /// </summary>
         /// <value>
         /// The access key.
         /// </value>
-        char accessKey { get; set; }
+        public char accessKey { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Adds the event listener.
@@ -556,27 +655,27 @@ namespace Litehtml
         /// <param name="event">The event.</param>
         /// <param name="function">The function.</param>
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
-        void addEventListener(string @event, string function, bool useCapture = false);
+        public void addEventListener(string @event, string function, bool useCapture = false) => _events.addEventListener(@event, null, new EventListenerOptions { capture = useCapture });
 
-        ///// <summary>
-        ///// Adds a new child node, to an element, as the last child node
-        ///// </summary>
-        ///// <param name="node">The node.</param>
-        ///// <returns></returns>
-        //Node appendChild(Node node); //: Node
+        /// <summary>
+        /// Adds a new child node, to an element, as the last child node
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public override Node appendChild(Node node) => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns a NamedNodeMap of an element's attributes
-        ///// </summary>
-        ///// <value>
-        ///// The attributes.
-        ///// </value>
-        //NamedNodeMap attributes { get; } //: Node
+        /// <summary>
+        /// Returns a NamedNodeMap of an element's attributes
+        /// </summary>
+        /// <value>
+        /// The attributes.
+        /// </value>
+        public override NamedNodeMap attributes => new NamedNodeMap(((html_tag)_elem)._attrs);
 
         /// <summary>
         /// Removes focus from an element
         /// </summary>
-        void blur();
+        public void blur() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the number of child elements an element has
@@ -584,17 +683,17 @@ namespace Litehtml
         /// <value>
         /// The child element count.
         /// </value>
-        int childElementCount { get; }
+        public int childElementCount => _elem._children.Count;
 
         ///// <summary>
         ///// Returns a collection of an element's child nodes (including text and comment nodes)
         ///// </summary>
-        //NodeList childNodes { get; } //: Node
+        //public NodeList childNodes => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns a collection of an element's child element (excluding text and comment nodes)
         /// </summary>
-        HTMLCollection children { get; }
+        public HTMLCollection children => new HTMLCollection(_elem._children);
 
         /// <summary>
         /// Returns the class name(s) of an element
@@ -602,7 +701,7 @@ namespace Litehtml
         /// <value>
         /// The class list.
         /// </value>
-        DOMTokenList classList { get; }
+        public DOMTokenList classList => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the value of the class attribute of an element
@@ -610,12 +709,12 @@ namespace Litehtml
         /// <value>
         /// The name of the class.
         /// </value>
-        string className { get; set; }
+        public string className { get => _elem.get_attr("class"); set => _elem.set_attr("class", value); }
 
         /// <summary>
         /// Simulates a mouse-click on an element
         /// </summary>
-        void click();
+        public void click() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the height of an element, including padding
@@ -623,7 +722,7 @@ namespace Litehtml
         /// <value>
         /// The height of the client.
         /// </value>
-        int clientHeight { get; }
+        public int clientHeight => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the width of the left border of an element
@@ -631,7 +730,7 @@ namespace Litehtml
         /// <value>
         /// The client left.
         /// </value>
-        int clientLeft { get; }
+        public int clientLeft => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the width of the top border of an element
@@ -639,7 +738,7 @@ namespace Litehtml
         /// <value>
         /// The client top.
         /// </value>
-        int clientTop { get; }
+        public int clientTop => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the width of an element, including padding
@@ -647,21 +746,21 @@ namespace Litehtml
         /// <value>
         /// The width of the client.
         /// </value>
-        int clientWidth { get; }
+        public int clientWidth => throw new NotImplementedException();
 
         ///// <summary>
         ///// Clones an element
         ///// </summary>
         ///// <param name="deep">if set to <c>true</c> [deep].</param>
         ///// <returns></returns>
-        //Node cloneNode(bool deep = false); //: Node
+        //public Node cloneNode(bool deep = false) => throw new NotImplementedException(); //: Node
 
         ///// <summary>
         ///// Compares the document position of two elements
         ///// </summary>
         ///// <param name="node">The node.</param>
         ///// <returns></returns>
-        //int compareDocumentPosition(Node node); //: Node
+        //public int compareDocumentPosition(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns true if a node is a descendant of a node, otherwise false
@@ -670,7 +769,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if [contains] [the specified node]; otherwise, <c>false</c>.
         /// </returns>
-        bool contains(Node node);
+        public bool contains(Node node) => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns whether the content of an element is editable or not
@@ -678,7 +777,7 @@ namespace Litehtml
         /// <value>
         /// The content editable.
         /// </value>
-        string contentEditable { get; set; }
+        public string contentEditable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Sets or returns the value of the dir attribute of an element
@@ -686,12 +785,12 @@ namespace Litehtml
         /// <value>
         /// The dir.
         /// </value>
-        string dir { get; set; }
+        public string dir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Cancels an element in fullscreen mode
         /// </summary>
-        void exitFullscreen();
+        public void exitFullscreen() => throw new NotImplementedException();
 
         ///// <summary>
         ///// Returns the first child node of an element
@@ -699,7 +798,7 @@ namespace Litehtml
         ///// <value>
         ///// The first child.
         ///// </value>
-        //Node firstChild { get; } //: Node
+        //public Node firstChild => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the first child element of an element
@@ -707,46 +806,63 @@ namespace Litehtml
         /// <value>
         /// The first element child.
         /// </value>
-        Node firstElementChild { get; }
+        public Node firstElementChild => _elem._children.Count > 0 ? _elem._children[0] : null;
 
         /// <summary>
         /// Gives focus to an element
         /// </summary>
-        void focus();
+        public void focus() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the specified attribute value of an element node
         /// </summary>
         /// <param name="attributename">The attributename.</param>
         /// <returns></returns>
-        string getAttribute(string attributename);
+        public string getAttribute(string attributename) => _elem.get_attr(attributename);
 
         /// <summary>
         /// Returns the specified attribute node
         /// </summary>
         /// <param name="attributename">The attributename.</param>
         /// <returns></returns>
-        Attr getAttributeNode(string attributename);
+        public Attr getAttributeNode(string attributename) => new Attr(((html_tag)this)._attrs, attributename);
 
         /// <summary>
         /// Returns the size of an element and its position relative to the viewport
         /// </summary>
         /// <returns></returns>
-        Rect getBoundingClientRect();
+        public Rect getBoundingClientRect() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a collection of all child elements with the specified class name
         /// </summary>
         /// <param name="classname">The classname.</param>
         /// <returns></returns>
-        NodeList getElementsByClassName(string classname);
+        public NodeList getElementsByClassName(string classname)
+        {
+            var elem = new css_element_selector();
+            var attr = new css_attribute_selector
+            {
+                val = classname,
+                condition = attr_select_condition.equal,
+                attribute = "class"
+            };
+            elem._attrs.Add(attr);
+            var sel = new css_selector(elem);
+            return new NodeList(_elem.select_all(sel));
+        }
 
         /// <summary>
         /// Returns a collection of all child elements with the specified tag name
         /// </summary>
         /// <param name="tagname">The tagname.</param>
         /// <returns></returns>
-        NodeList getElementsByTagName(string tagname);
+        public NodeList getElementsByTagName(string tagname)
+        {
+            var elem = new css_element_selector { _tag = tagname.ToLowerInvariant() };
+            var sel = new css_selector(elem);
+            return new NodeList(_elem.select_all(sel));
+        }
 
         /// <summary>
         /// Returns true if an element has the specified attribute, otherwise false
@@ -755,7 +871,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if the specified attributename has attribute; otherwise, <c>false</c>.
         /// </returns>
-        bool hasAttribute(string attributename);
+        public bool hasAttribute(string attributename) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns true if an element has any attributes, otherwise false
@@ -763,7 +879,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if this instance has attributes; otherwise, <c>false</c>.
         /// </returns>
-        bool hasAttributes();
+        public bool hasAttributes() => throw new NotImplementedException();
 
         ///// <summary>
         ///// Returns true if an element has any child nodes, otherwise false
@@ -771,7 +887,7 @@ namespace Litehtml
         ///// <returns>
         /////   <c>true</c> if [has child nodes]; otherwise, <c>false</c>.
         ///// </returns>
-        //bool hasChildNodes(); //: Node
+        //public bool hasChildNodes() => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Sets or returns the value of the id attribute of an element
@@ -779,7 +895,7 @@ namespace Litehtml
         /// <value>
         /// The identifier.
         /// </value>
-        string id { get; set; }
+        public string id { get => _elem.get_attr("id"); set => _elem.set_attr("id", value); }
 
         /// <summary>
         /// Sets or returns the content of an element
@@ -787,7 +903,7 @@ namespace Litehtml
         /// <value>
         /// The inner HTML.
         /// </value>
-        string innerHTML { get; set; }
+        public string innerHTML { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Sets or returns the text content of a node and its descendants
@@ -795,35 +911,35 @@ namespace Litehtml
         /// <value>
         /// The inner text.
         /// </value>
-        string innerText { get; set; }
+        public string innerText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Inserts a HTML element at the specified position relative to the current element
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="element">The element.</param>
-        void insertAdjacentElement(string position, Element element);
+        public void insertAdjacentElement(string position, Element element) => throw new NotImplementedException();
 
         /// <summary>
         /// Inserts a HTML formatted text at the specified position relative to the current element
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="text">The text.</param>
-        void insertAdjacentHTML(string position, string text);
+        public void insertAdjacentHTML(string position, string text) => throw new NotImplementedException();
 
         /// <summary>
         /// Inserts text into the specified position relative to the current element
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="text">The text.</param>
-        void insertAdjacentText(string position, string text);
+        public void insertAdjacentText(string position, string text) => throw new NotImplementedException();
 
         /// <summary>
         /// Inserts a new child node before a specified, existing, child node
         /// </summary>
         /// <param name="newnode">The newnode.</param>
         /// <param name="existingnode">The existingnode.</param>
-        Node insertBefore(Node newnode, Node existingnode);
+        public Node insertBefore(Node newnode, Node existingnode) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns true if the content of an element is editable, otherwise false
@@ -831,7 +947,7 @@ namespace Litehtml
         /// <value>
         ///   <c>true</c> if this instance is content editable; otherwise, <c>false</c>.
         /// </value>
-        bool isContentEditable { get; }
+        public bool isContentEditable => throw new NotImplementedException();
 
         ///// <summary>
         ///// Returns true if a specified namespaceURI is the default, otherwise false
@@ -840,7 +956,7 @@ namespace Litehtml
         ///// <returns>
         /////   <c>true</c> if [is default namespace] [the specified namespace URI]; otherwise, <c>false</c>.
         ///// </returns>
-        //bool isDefaultNamespace(string namespaceURI); //: Node
+        //public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException(); //: Node
 
         ///// <summary>
         ///// Checks if two elements are equal
@@ -849,7 +965,7 @@ namespace Litehtml
         ///// <returns>
         /////   <c>true</c> if [is equal node] [the specified node]; otherwise, <c>false</c>.
         ///// </returns>
-        //bool isEqualNode(Node node); //: Node
+        //public bool isEqualNode(Node node) => throw new NotImplementedException(); //: Node
 
         ///// <summary>
         ///// Checks if two elements are the same node
@@ -858,7 +974,7 @@ namespace Litehtml
         ///// <returns>
         /////   <c>true</c> if [is same node] [the specified node]; otherwise, <c>false</c>.
         ///// </returns>
-        //bool isSameNode(Node node); //: Node
+        //public bool isSameNode(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Sets or returns the value of the lang attribute of an element
@@ -866,7 +982,7 @@ namespace Litehtml
         /// <value>
         /// The language.
         /// </value>
-        string lang { get; set; }
+        public string lang { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         ///// <summary>
         ///// Returns the last child node of an element
@@ -874,7 +990,7 @@ namespace Litehtml
         ///// <value>
         ///// The last child.
         ///// </value>
-        //Node lastChild { get; } //: Node
+        //public Node lastChild => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the last child element of an element
@@ -882,7 +998,7 @@ namespace Litehtml
         /// <value>
         /// The last element child.
         /// </value>
-        Node lastElementChild { get; }
+        public Node lastElementChild => _elem._children.Count > 0 ? _elem._children[_elem._children.Count - 1] : null;
 
         /// <summary>
         /// Returns the namespace URI of an element
@@ -890,7 +1006,7 @@ namespace Litehtml
         /// <value>
         /// The namespace URI.
         /// </value>
-        string namespaceURI { get; }
+        public string namespaceURI => throw new NotImplementedException();
 
         ///// <summary>
         ///// Returns the next node at the same node tree level
@@ -898,7 +1014,7 @@ namespace Litehtml
         ///// <value>
         ///// The next sibling.
         ///// </value>
-        //Node nextSibling { get; } //: Node
+        //public Node nextSibling => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the next element at the same node tree level
@@ -906,7 +1022,7 @@ namespace Litehtml
         /// <value>
         /// The next element sibling.
         /// </value>
-        Node nextElementSibling { get; }
+        public Node nextElementSibling => throw new NotImplementedException();
 
         ///// <summary>
         ///// Returns the name of a node
@@ -914,7 +1030,7 @@ namespace Litehtml
         ///// <value>
         ///// The name of the node.
         ///// </value>
-        //string nodeName { get; } //: Node
+        //public string nodeName => throw new NotImplementedException(); //: Node
 
         ///// <summary>
         ///// Returns the node type of a node
@@ -922,7 +1038,7 @@ namespace Litehtml
         ///// <value>
         ///// The type of the node.
         ///// </value>
-        //int nodeType { get; } //: Node
+        //public int nodeType => throw new NotImplementedException(); //: Node
 
         ///// <summary>
         ///// Sets or returns the value of a node
@@ -930,12 +1046,12 @@ namespace Litehtml
         ///// <value>
         ///// The node value.
         ///// </value>
-        //string nodeValue { get; set; } //: Node
+        //public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
 
         ///// <summary>
         ///// Joins adjacent text nodes and removes empty text nodes in an element
         ///// </summary>
-        //void normalize(); //: Node
+        //public void normalize() => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the height of an element, including padding, border and scrollbar
@@ -943,7 +1059,7 @@ namespace Litehtml
         /// <value>
         /// The height of the offset.
         /// </value>
-        int offsetHeight { get; }
+        public int offsetHeight => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the width of an element, including padding, border and scrollbar
@@ -951,7 +1067,7 @@ namespace Litehtml
         /// <value>
         /// The width of the offset.
         /// </value>
-        int offsetWidth { get; }
+        public int offsetWidth => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the horizontal offset position of an element
@@ -959,7 +1075,7 @@ namespace Litehtml
         /// <value>
         /// The offset left.
         /// </value>
-        int offsetLeft { get; }
+        public int offsetLeft => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the offset container of an element
@@ -967,7 +1083,7 @@ namespace Litehtml
         /// <value>
         /// The offset parent.
         /// </value>
-        Node offsetParent { get; }
+        public Node offsetParent => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the vertical offset position of an element
@@ -975,7 +1091,7 @@ namespace Litehtml
         /// <value>
         /// The offset top.
         /// </value>
-        int offsetTop { get; }
+        public int offsetTop => throw new NotImplementedException();
 
         ///// <summary>
         ///// Returns the root element (document object) for an element
@@ -983,7 +1099,7 @@ namespace Litehtml
         ///// <value>
         ///// The owner document.
         ///// </value>
-        //Document ownerDocument { get; } //: Node
+        //public Document ownerDocument => throw new NotImplementedException(); //: Node
 
         ///// <summary>
         ///// Returns the parent node of an element
@@ -991,7 +1107,7 @@ namespace Litehtml
         ///// <value>
         ///// The parent node.
         ///// </value>
-        //Node parentNode { get; } //: Node
+        //public Node parentNode => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the parent element node of an element
@@ -999,7 +1115,7 @@ namespace Litehtml
         /// <value>
         /// The parent element.
         /// </value>
-        Element parentElement { get; }
+        public Element parentElement => _elem._parent;
 
         ///// <summary>
         ///// Returns the previous node at the same node tree level
@@ -1007,7 +1123,7 @@ namespace Litehtml
         ///// <value>
         ///// The previous sibling.
         ///// </value>
-        //Node previousSibling { get; } //: Node
+        //public Node previousSibling => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the previous element at the same node tree level
@@ -1015,41 +1131,41 @@ namespace Litehtml
         /// <value>
         /// The previous element sibling.
         /// </value>
-        Node previousElementSibling { get; }
+        public Node previousElementSibling => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the first child element that matches a specified CSS selector(s) of an element
         /// </summary>
         /// <param name="selectors">The selectors.</param>
         /// <returns></returns>
-        Element querySelector(string selectors);
+        public Element querySelector(string selectors) => _elem.select_one(selectors);
 
         /// <summary>
         /// Returns all child elements that matches a specified CSS selector(s) of an element
         /// </summary>
         /// <param name="selectors">The selectors.</param>
         /// <returns></returns>
-        NodeList querySelectorAll(string selectors);
+        public NodeList querySelectorAll(string selectors) => new NodeList(_elem.select_all(selectors));
 
         /// <summary>
         /// Removes a specified attribute from an element
         /// </summary>
         /// <param name="attributename">The attributename.</param>
-        void removeAttribute(string attributename);
+        public void removeAttribute(string attributename) => throw new NotImplementedException();
 
         /// <summary>
         /// Removes a specified attribute node, and returns the removed node
         /// </summary>
         /// <param name="attributenode">The attributenode.</param>
         /// <returns></returns>
-        Attr removeAttributeNode(Attr attributenode);
+        public Attr removeAttributeNode(Attr attributenode) => throw new NotImplementedException();
 
         ///// <summary>
         ///// Removes a child node from an element
         ///// </summary>
         ///// <param name="node">The node.</param>
         ///// <returns></returns>
-        //Node removeChild(Node node); //: Node
+        //public Node removeChild(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Removes an event handler that has been attached with the addEventListener() method
@@ -1057,7 +1173,7 @@ namespace Litehtml
         /// <param name="event">The event.</param>
         /// <param name="function">The function.</param>
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
-        void removeEventListener(string @event, string function, bool useCapture = false);
+        public void removeEventListener(string @event, string function, bool useCapture = false) => _events.removeEventListener(@event, null, new EventListenerOptions { capture = useCapture });
 
         ///// <summary>
         ///// Replaces a child node in an element
@@ -1065,12 +1181,12 @@ namespace Litehtml
         ///// <param name="newnode">The newnode.</param>
         ///// <param name="oldnode">The oldnode.</param>
         ///// <returns></returns>
-        //Node replaceChild(Node newnode, Node oldnode); //: Node
+        //public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Shows an element in fullscreen mode
         /// </summary>
-        void requestFullscreen();
+        public void requestFullscreen() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the entire height of an element, including padding
@@ -1078,13 +1194,13 @@ namespace Litehtml
         /// <value>
         /// The height of the scroll.
         /// </value>
-        int scrollHeight { get; }
+        public int scrollHeight => throw new NotImplementedException();
 
         /// <summary>
         /// Scrolls the specified element into the visible area of the browser window
         /// </summary>
         /// <param name="alignTo">The align to.</param>
-        void scrollIntoView(bool alignTo = false);
+        public void scrollIntoView(bool alignTo = false) => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the number of pixels an element's content is scrolled horizontally
@@ -1092,7 +1208,7 @@ namespace Litehtml
         /// <value>
         /// The scroll left.
         /// </value>
-        int scrollLeft { get; }
+        public int scrollLeft => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the number of pixels an element's content is scrolled vertically
@@ -1100,7 +1216,7 @@ namespace Litehtml
         /// <value>
         /// The scroll top.
         /// </value>
-        int scrollTop { get; }
+        public int scrollTop => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the entire width of an element, including padding
@@ -1108,21 +1224,21 @@ namespace Litehtml
         /// <value>
         /// The width of the scroll.
         /// </value>
-        int scrollWidth { get; }
+        public int scrollWidth => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or changes the specified attribute, to the specified value
         /// </summary>
         /// <param name="attributename">The attributename.</param>
         /// <param name="attributevalue">The attributevalue.</param>
-        void setAttribute(string attributename, string attributevalue);
+        public void setAttribute(string attributename, string attributevalue) => _elem.set_attr(attributename, attributevalue);
 
         /// <summary>
         /// Sets or changes the specified attribute node
         /// </summary>
         /// <param name="attributenode">The attributenode.</param>
         /// <returns></returns>
-        Attr setAttributeNode(Attr attributenode);
+        public Attr setAttributeNode(Attr attributenode) => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the value of the style attribute of an element
@@ -1130,7 +1246,7 @@ namespace Litehtml
         /// <value>
         /// The style.
         /// </value>
-        Style style { get; }
+        public Style style => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the value of the tabindex attribute of an element
@@ -1138,7 +1254,7 @@ namespace Litehtml
         /// <value>
         /// The index of the tab.
         /// </value>
-        int tabIndex { get; set; }
+        public int tabIndex { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the tag name of an element
@@ -1146,7 +1262,7 @@ namespace Litehtml
         /// <value>
         /// The name of the tag.
         /// </value>
-        string tagName { get; }
+        public string tagName => _elem.get_tagName();
 
         ///// <summary>
         ///// Sets or returns the textual content of a node and its descendants
@@ -1154,7 +1270,7 @@ namespace Litehtml
         ///// <value>
         ///// The content of the text.
         ///// </value>
-        //string textContent { get; set; } //: Node
+        //public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
 
         /// <summary>
         /// Sets or returns the value of the title attribute of an element
@@ -1162,12 +1278,12 @@ namespace Litehtml
         /// <value>
         /// The title.
         /// </value>
-        string title { get; set; }
+        public string title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Converts an element to a string
         /// </summary>
-        string toString();
+        public string toString() => throw new NotImplementedException();
     }
 
     /// <summary>
@@ -1403,7 +1519,7 @@ namespace Litehtml
         /// The matches.
         /// </value>
         public object matches { get; }
-        
+
         /// <summary>
         /// A String, representing the serialized media query list
         /// </summary>
@@ -1411,7 +1527,7 @@ namespace Litehtml
         /// The media.
         /// </value>
         public string media { get; }
-        
+
         /// <summary>
         /// Adds a new listener function, which is executed whenever the media query's evaluated result changes
         /// </summary>
@@ -2042,7 +2158,7 @@ namespace Litehtml
         /// The box shadow.
         /// </value>
         string boxShadow { get; set; }
-        
+
         /// <summary>
         /// Allows you to define certain elements to fit an area in a certain way
         /// </summary>
@@ -2930,7 +3046,7 @@ namespace Litehtml
         /// The transform style.
         /// </value>
         string transformStyle { get; set; }
-        
+
         /// <summary>
         /// A shorthand property for setting or returning the four transition properties
         /// </summary>
@@ -2938,7 +3054,7 @@ namespace Litehtml
         /// The transition.
         /// </value>
         string transition { get; set; }
-        
+
         /// <summary>
         /// Sets or returns the CSS property that the transition effect is for
         /// </summary>
@@ -2946,7 +3062,7 @@ namespace Litehtml
         /// The transition property.
         /// </value>
         string transitionProperty { get; set; }
-        
+
         /// <summary>
         /// Sets or returns how many seconds or milliseconds a transition effect takes to complete
         /// </summary>
@@ -2954,7 +3070,7 @@ namespace Litehtml
         /// The duration of the transition.
         /// </value>
         string transitionDuration { get; set; }
-        
+
         /// <summary>
         /// Sets or returns the speed curve of the transition effect
         /// </summary>
@@ -2962,7 +3078,7 @@ namespace Litehtml
         /// The transition timing function.
         /// </value>
         string transitionTimingFunction { get; set; }
-        
+
         /// <summary>
         /// Sets or returns when the transition effect will start
         /// </summary>
@@ -2970,7 +3086,7 @@ namespace Litehtml
         /// The transition delay.
         /// </value>
         string transitionDelay { get; set; }
-        
+
         /// <summary>
         /// Sets or returns whether the text should be overridden to support multiple languages in the same document
         /// </summary>
@@ -2978,7 +3094,7 @@ namespace Litehtml
         /// The unicode bidi.
         /// </value>
         string unicodeBidi { get; set; }
-        
+
         /// <summary>
         /// Sets or returns whether the text of an element can be selected or not
         /// </summary>
@@ -2986,7 +3102,7 @@ namespace Litehtml
         /// The user select.
         /// </value>
         string userSelect { get; set; }
-        
+
         /// <summary>
         /// Sets or returns the vertical alignment of the content in an element
         /// </summary>
@@ -2994,7 +3110,7 @@ namespace Litehtml
         /// The vertical align.
         /// </value>
         string verticalAlign { get; set; }
-        
+
         /// <summary>
         /// Sets or returns whether an element should be visible
         /// </summary>
@@ -3002,7 +3118,7 @@ namespace Litehtml
         /// The visibility.
         /// </value>
         string visibility { get; set; }
-        
+
         /// <summary>
         /// Sets or returns how to handle tabs, line breaks and whitespace in a text
         /// </summary>
@@ -3010,7 +3126,7 @@ namespace Litehtml
         /// The white space.
         /// </value>
         string whiteSpace { get; set; }
-        
+
         /// <summary>
         /// Sets or returns the width of an element
         /// </summary>
@@ -3018,7 +3134,7 @@ namespace Litehtml
         /// The width.
         /// </value>
         string width { get; set; }
-        
+
         /// <summary>
         /// Sets or returns line breaking rules for non-CJK scripts
         /// </summary>
@@ -3026,7 +3142,7 @@ namespace Litehtml
         /// The word break.
         /// </value>
         string wordBreak { get; set; }
-        
+
         /// <summary>
         /// Sets or returns the spacing between words in a text
         /// </summary>
@@ -3034,7 +3150,7 @@ namespace Litehtml
         /// The word spacing.
         /// </value>
         string wordSpacing { get; set; }
-        
+
         /// <summary>
         /// Allows long, unbreakable words to be broken and wrap to the next line
         /// </summary>
@@ -3042,7 +3158,7 @@ namespace Litehtml
         /// The word wrap.
         /// </value>
         string wordWrap { get; set; }
-       
+
         /// <summary>
         /// Sets or returns the minimum number of lines for an element that must be visible at the top of a page
         /// </summary>
@@ -3050,7 +3166,7 @@ namespace Litehtml
         /// The widows.
         /// </value>
         string widows { get; set; }
-        
+
         /// <summary>
         /// Sets or returns the stack order of a positioned element
         /// </summary>

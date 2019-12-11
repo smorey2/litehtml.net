@@ -58,19 +58,23 @@ namespace Litehtml
 
             // https://www.w3schools.com/jsref/met_namednodemap_getnameditem.asp
             {
-                var btn = document.getElementsByTagName("BUTTON")[0] as Element;
-                var a = btn.attributes.getNamedItem("onclick").value;
+                var btn = (Element)document.getElementsByTagName("BUTTON")[0];
+                var x = btn.attributes.getNamedItem("onclick").value;
+                Assert.AreEqual("myFunction()", x);
             }
 
             // https://www.w3schools.com/jsref/met_namednodemap_item.asp
             {
                 var x = document.getElementsByTagName("BUTTON")[0].attributes.item(0).nodeName;
+                Assert.AreEqual("myFunction()", x);
             }
             {
-                var a = document.getElementsByTagName("BUTTON")[0].attributes.item(1);   // The 2nd attribute
+                var x = document.getElementsByTagName("BUTTON")[0].attributes.item(1);   // The 2nd attribute
+                Assert.AreEqual("myFunction()", x);
             }
             {
-                var a = document.getElementsByTagName("BUTTON")[0].attributes[1];        // The 2nd attribute
+                var x = document.getElementsByTagName("BUTTON")[0].attributes[1];        // The 2nd attribute
+                Assert.AreEqual("myFunction()", x);
             }
             {
                 document.getElementsByTagName("BUTTON")[0].attributes[1].value = "newClass";

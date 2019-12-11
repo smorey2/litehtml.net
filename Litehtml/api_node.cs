@@ -8,14 +8,17 @@ namespace Litehtml
     /// Node
     /// https://www.w3schools.com/xml/dom_node.asp
     /// </summary>
-    public interface Node
+    public abstract class Node
     {
+        protected element _elem;
+        protected int _nodeType;
+
         /// <summary>
         /// Adds a new child node, to an element, as the last child node
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        Node appendChild(Node node);
+        public abstract Node appendChild(Node node);
 
         /// <summary>
         /// Returns a NamedNodeMap of an element's attributes
@@ -23,7 +26,7 @@ namespace Litehtml
         /// <value>
         /// The attributes.
         /// </value>
-        NamedNodeMap attributes { get; }
+        public abstract NamedNodeMap attributes { get; }
 
         /// <summary>
         /// Returns the absolute base URI of a node
@@ -31,26 +34,26 @@ namespace Litehtml
         /// <value>
         /// The base URI.
         /// </value>
-        string baseURI { get; } //: Base
+        public string baseURI => "base"; //: Base
 
         /// <summary>
         /// Returns a collection of an element's child nodes (including text and comment nodes)
         /// </summary>
-        NodeList childNodes { get; }
+        public NodeList childNodes => _elem != null ? new NodeList(_elem._children) : new NodeList();
 
         /// <summary>
         /// Clones an element
         /// </summary>
         /// <param name="deep">if set to <c>true</c> [deep].</param>
         /// <returns></returns>
-        Node cloneNode(bool deep = false);
+        public Node cloneNode(bool deep = false) => throw new NotImplementedException();
 
         /// <summary>
         /// Compares the document position of two elements
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        int compareDocumentPosition(Node node);
+        public int compareDocumentPosition(Node node) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the first child node of an element
@@ -58,7 +61,7 @@ namespace Litehtml
         /// <value>
         /// The first child.
         /// </value>
-        Node firstChild { get; }
+        public Node firstChild => _elem?._children[0];
 
         /// <summary>
         /// Returns true if an element has any child nodes, otherwise false
@@ -66,7 +69,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if [has child nodes]; otherwise, <c>false</c>.
         /// </returns>
-        bool hasChildNodes();
+        public bool hasChildNodes() => _elem._children.Count > 0;
 
         /// <summary>
         /// Returns true if a specified namespaceURI is the default, otherwise false
@@ -75,7 +78,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if [is default namespace] [the specified namespace URI]; otherwise, <c>false</c>.
         /// </returns>
-        bool isDefaultNamespace(string namespaceURI);
+        public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException();
 
         /// <summary>
         /// Checks if two elements are equal
@@ -84,7 +87,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if [is equal node] [the specified node]; otherwise, <c>false</c>.
         /// </returns>
-        bool isEqualNode(Node node);
+        public bool isEqualNode(Node node) => throw new NotImplementedException();
 
         /// <summary>
         /// Checks if two elements are the same node
@@ -93,7 +96,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if [is same node] [the specified node]; otherwise, <c>false</c>.
         /// </returns>
-        bool isSameNode(Node node);
+        public bool isSameNode(Node node) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the last child node of an element
@@ -101,21 +104,21 @@ namespace Litehtml
         /// <value>
         /// The last child.
         /// </value>
-        Node lastChild { get; }
+        public Node lastChild => _elem?._children.Count > 0 ? _elem._children[_elem._children.Count - 1] : null;
 
         /// <summary>
         /// Returns the namespace URI associated with a given prefix
         /// </summary>
         /// <param name="prefix">The prefix.</param>
         /// <returns></returns>
-        string lookupNamespaceURI(string prefix); //: Base
+        public string lookupNamespaceURI(string prefix) => throw new NotImplementedException(); //: Base
 
         /// <summary>
         /// Returns the prefix associated with a given namespace URI
         /// </summary>
         /// <param name="namespaceURI">The namespace URI.</param>
         /// <returns></returns>
-        string lookupPrefix(string namespaceURI); //: Base
+        public string lookupPrefix(string namespaceURI) => throw new NotImplementedException(); //: Base
 
         /// <summary>
         /// Returns the next node at the same node tree level
@@ -123,7 +126,7 @@ namespace Litehtml
         /// <value>
         /// The next sibling.
         /// </value>
-        Node nextSibling { get; }
+        public Node nextSibling => _elem != null ? (Node)null : null;
 
         /// <summary>
         /// Returns the name of a node
@@ -131,7 +134,7 @@ namespace Litehtml
         /// <value>
         /// The name of the node.
         /// </value>
-        string nodeName { get; }
+        public string nodeName => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the node type of a node
@@ -139,7 +142,7 @@ namespace Litehtml
         /// <value>
         /// The type of the node.
         /// </value>
-        int nodeType { get; }
+        public int nodeType => _nodeType;
 
         /// <summary>
         /// Sets or returns the value of a node
@@ -147,12 +150,12 @@ namespace Litehtml
         /// <value>
         /// The node value.
         /// </value>
-        string nodeValue { get; set; }
+        public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Joins adjacent text nodes and removes empty text nodes in an element
         /// </summary>
-        void normalize();
+        public void normalize() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the root element (document object) for an element
@@ -160,7 +163,7 @@ namespace Litehtml
         /// <value>
         /// The owner document.
         /// </value>
-        Document ownerDocument { get; }
+        public Document ownerDocument => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the parent node of an element
@@ -168,7 +171,7 @@ namespace Litehtml
         /// <value>
         /// The parent node.
         /// </value>
-        Node parentNode { get; }
+        public Node parentNode => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the namespace prefix of a node
@@ -176,7 +179,7 @@ namespace Litehtml
         /// <value>
         /// The prefix.
         /// </value>
-        string prefix { get; set; } //: Base
+        public string prefix { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Base
 
         /// <summary>
         /// Returns the previous node at the same node tree level
@@ -184,14 +187,14 @@ namespace Litehtml
         /// <value>
         /// The previous sibling.
         /// </value>
-        Node previousSibling { get; }
+        public Node previousSibling => _elem != null ? (Node)null : null;
 
         /// <summary>
         /// Removes a child node from an element
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        Node removeChild(Node node);
+        public Node removeChild(Node node) => throw new NotImplementedException();
 
         /// <summary>
         /// Replaces a child node in an element
@@ -199,7 +202,7 @@ namespace Litehtml
         /// <param name="newnode">The newnode.</param>
         /// <param name="oldnode">The oldnode.</param>
         /// <returns></returns>
-        Node replaceChild(Node newnode, Node oldnode);
+        public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the textual content of a node and its descendants
@@ -207,7 +210,7 @@ namespace Litehtml
         /// <value>
         /// The content of the text.
         /// </value>
-        string textContent { get; set; }
+        public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 
     /// <summary>
@@ -215,15 +218,27 @@ namespace Litehtml
     /// https://www.w3schools.com/jsref/dom_obj_attributes.asp
     /// </summary>
     /// <seealso cref="Litehtml.Node" />
-    public interface Attr : Node
+    public class Attr : Node
     {
+        readonly Dictionary<string, string> _attrs;
+        readonly string _name;
+
+        public Attr(Dictionary<string, string> attrs, string name)
+        {
+            _attrs = attrs;
+            _name = name;
+        }
+
+        public override Node appendChild(Node node) => throw new NotImplementedException();
+        public override NamedNodeMap attributes => NamedNodeMap.Empty;
+
         /// <summary>
         /// Returns the name of an attribute
         /// </summary>
         /// <value>
         /// The name.
         /// </value>
-        string name { get; }
+        public string name => _name;
 
         /// <summary>
         /// Sets or returns the value of the attribute
@@ -231,7 +246,7 @@ namespace Litehtml
         /// <value>
         /// The value.
         /// </value>
-        string value { get; set; }
+        public string value { get => _attrs[_name]; set => _attrs[_name] = value; }
 
         /// <summary>
         /// Returns true if the attribute has been specified, otherwise it returns false
@@ -239,7 +254,7 @@ namespace Litehtml
         /// <value>
         ///   <c>true</c> if specified; otherwise, <c>false</c>.
         /// </value>
-        bool specified { get; }
+        public bool specified => _attrs[_name] != null;
     }
 
     /// <summary>
@@ -268,7 +283,7 @@ namespace Litehtml
         /// <summary>
         /// Returns a specified attribute node from a NamedNodeMap
         /// </summary>
-        public Attr getNamedItem(string nodename) => _attrs.ContainsKey(nodename) ? new attr(_attrs, nodename) : null;
+        public Attr getNamedItem(string nodename) => _attrs.ContainsKey(nodename) ? new Attr(_attrs, nodename) : null;
 
         /// <summary>
         /// Gets the <see cref="Node"/> with the specified index.
@@ -278,14 +293,14 @@ namespace Litehtml
         /// </value>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public Attr this[int index] => index < _attrs.Count ? new attr(_attrs, _attrs.Keys.ElementAt(index)) : null;
+        public Attr this[int index] => index < _attrs.Count ? new Attr(_attrs, _attrs.Keys.ElementAt(index)) : null;
         
         /// <summary>
         /// Returns the attribute node at a specified index in a NamedNodeMap
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public Attr item(int index) => index < _attrs.Count ? new attr(_attrs, _attrs.Keys.ElementAt(index)) : null;
+        public Attr item(int index) => index < _attrs.Count ? new Attr(_attrs, _attrs.Keys.ElementAt(index)) : null;
 
         /// <summary>
         /// Returns the number of attribute nodes in a NamedNodeMap
@@ -306,7 +321,7 @@ namespace Litehtml
             if (!_attrs.TryGetValue(nodename, out var value))
                 throw new KeyNotFoundException(nodename);
             _attrs.Remove(nodename);
-            return new attr(_attrs, nodename);
+            return new Attr(_attrs, nodename);
         }
 
         /// <summary>

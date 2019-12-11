@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Litehtml
 {
     [DebuggerDisplay("elm, children={_children.Count}")]
-    public partial class element : EventTarget, Element
+    public partial class element : Element
     {
         protected internal element _parent;
         protected internal document _doc;
@@ -17,7 +17,7 @@ namespace Litehtml
         protected internal margins _borders;
         protected internal bool _skip;
 
-        public element(document doc)
+        public element(document doc) : base()
         {
             _doc = doc;
             _box = null;
