@@ -134,15 +134,19 @@ namespace Litehtml
     /// Document
     /// https://www.w3schools.com/jsref/dom_obj_document.asp
     /// </summary>
-    public interface Document
+    public class Document : Node // NodeList,
     {
+        readonly document _doc;
+
+        public Document() => _doc = (document)this;
+
         /// <summary>
         /// Returns the currently focused element in the document
         /// </summary>
         /// <value>
         /// The active element.
         /// </value>
-        Element activeElement { get; }
+        public Element activeElement => throw new NotImplementedException();
 
         /// <summary>
         /// Attaches an event handler to the document
@@ -150,14 +154,14 @@ namespace Litehtml
         /// <param name="event">The event.</param>
         /// <param name="function">The function.</param>
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
-        void addEventListener(string @event, string function, bool useCapture = false);
+        public void addEventListener(string @event, string function, bool useCapture = false) => throw new NotImplementedException();
 
         /// <summary>
         /// Adopts a node from another document
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        Node adoptNode(Node node);
+        public Node adoptNode(Node node) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a collection of all <a> elements in the document that have a name attribute
@@ -165,7 +169,14 @@ namespace Litehtml
         /// <value>
         /// The anchors.
         /// </value>
-        HTMLCollection anchors { get; }
+        public HTMLCollection anchors => throw new NotImplementedException();
+
+        /// <summary>
+        /// Adds a new child node, to an element, as the last child node
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public override Node appendChild(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns a collection of all <applet> elements in the document
@@ -173,7 +184,16 @@ namespace Litehtml
         /// <value>
         /// The applets.
         /// </value>
-        HTMLCollection applets { get; }
+        public HTMLCollection applets => throw new NotImplementedException();
+
+        /// <summary>
+        /// 
+        /// NotSupported - Returns a NamedNodeMap of an element's attributes
+        /// </summary>
+        /// <value>
+        /// The attributes.
+        /// </value>
+        public override NamedNodeMap attributes => throw new NotSupportedException(); //: Node
 
         /// <summary>
         /// Returns the absolute base URI of a document
@@ -181,7 +201,7 @@ namespace Litehtml
         /// <value>
         /// The base URI.
         /// </value>
-        string baseURI { get; }
+        public override string baseURI => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Sets or returns the document's body (the <body> element)
@@ -189,20 +209,7 @@ namespace Litehtml
         /// <value>
         /// The body.
         /// </value>
-        Element body { get; set; }
-
-        /// <summary>
-        /// Closes the output stream previously opened with document.open()
-        /// </summary>
-        void close();
-
-        /// <summary>
-        /// Returns all name/value pairs of cookies in the document
-        /// </summary>
-        /// <value>
-        /// The cookie.
-        /// </value>
-        string cookie { get; set; }
+        Element body { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the character encoding for the document
@@ -210,48 +217,80 @@ namespace Litehtml
         /// <value>
         /// The character set.
         /// </value>
-        string characterSet { get; }
+        public string characterSet => "UTF-8";
+
+        /// <summary>
+        /// Returns a collection of an element's child nodes (including text and comment nodes)
+        /// </summary>
+        public override NodeList childNodes => new NodeList(_doc._root._children); //: Node
+
+        /// <summary>
+        /// Clones an element
+        /// </summary>
+        /// <param name="deep">if set to <c>true</c> [deep].</param>
+        /// <returns></returns>
+        public override Node cloneNode(bool deep = false) => throw new NotImplementedException(); //: Node
+
+        /// <summary>
+        /// Closes the output stream previously opened with document.open()
+        /// </summary>
+        public void close() => throw new NotImplementedException();
+
+        /// <summary>
+        /// Compares the document position of two elements
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public override int compareDocumentPosition(Node node) => throw new NotImplementedException(); //: Node
+
+        /// <summary>
+        /// Returns all name/value pairs of cookies in the document
+        /// </summary>
+        /// <value>
+        /// The cookie.
+        /// </value>
+        public string cookie { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Creates an attribute node
         /// </summary>
         /// <param name="attributename">The attributename.</param>
         /// <returns></returns>
-        Attr createAttribute(string attributename);
+        public Attr createAttribute(string attributename) => new Attr(null, attributename);
 
         /// <summary>
         /// Creates a Comment node with the specified text
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        Node createComment(string text); //: IComment
+        public Node createComment(string text) => throw new NotImplementedException(); //: IComment
 
         /// <summary>
         /// Creates an empty DocumentFragment node
         /// </summary>
         /// <returns></returns>
-        DocumentFragment createDocumentFragment();
+        public DocumentFragment createDocumentFragment() => throw new NotImplementedException();
 
         /// <summary>
         /// Creates an Element node
         /// </summary>
         /// <param name="nodename">The nodename.</param>
         /// <returns></returns>
-        Element createElement(string nodename);
+        public Element createElement(string nodename) => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a new event
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        Event createEvent(string type);
+        public Event createEvent(string type) => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a Text node
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        Node createTextNode(string text); //: IText
+        public Node createTextNode(string text) => throw new NotImplementedException(); //: IText
 
         /// <summary>
         /// Returns the window object associated with a document, or null if none is available.
@@ -259,7 +298,7 @@ namespace Litehtml
         /// <value>
         /// The default view.
         /// </value>
-        Window defaultView { get; }
+        public Window defaultView => throw new NotImplementedException();
 
         /// <summary>
         /// Controls whether the entire document should be editable or not.
@@ -267,7 +306,7 @@ namespace Litehtml
         /// <value>
         /// The design mode.
         /// </value>
-        string designMode { get; set; } //= "off"
+        public string designMode { get => "off"; set => throw new NotSupportedException(); }
 
         /// <summary>
         /// Returns the Document Type Declaration associated with the document
@@ -275,7 +314,7 @@ namespace Litehtml
         /// <value>
         /// The doctype.
         /// </value>
-        DocumentType doctype { get; }
+        public DocumentType doctype => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the Document Element of the document (the <html> element)
@@ -283,7 +322,7 @@ namespace Litehtml
         /// <value>
         /// The document element.
         /// </value>
-        Element documentElement { get; }
+        public Element documentElement => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the location of the document
@@ -291,7 +330,7 @@ namespace Litehtml
         /// <value>
         /// The document URI.
         /// </value>
-        string documentURI { get; set; }
+        public string documentURI { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the domain name of the server that loaded the document
@@ -299,7 +338,7 @@ namespace Litehtml
         /// <value>
         /// The domain.
         /// </value>
-        string domain { get; }
+        public string domain => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a collection of all <embed> elements the document
@@ -307,7 +346,7 @@ namespace Litehtml
         /// <value>
         /// The embeds.
         /// </value>
-        HTMLCollection embeds { get; }
+        public HTMLCollection embeds => throw new NotImplementedException();
 
         /// <summary>
         /// Invokes the specified clipboard operation on the element currently having focus.
@@ -316,7 +355,15 @@ namespace Litehtml
         /// <param name="showUI">if set to <c>true</c> [show UI].</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        bool execCommand(string command, bool showUI, object value = null);
+        public bool execCommand(string command, bool showUI, object value = null) => throw new NotImplementedException();
+
+        /// <summary>
+        /// Returns the first child node of an element
+        /// </summary>
+        /// <value>
+        /// The first child.
+        /// </value>
+        public override Node firstChild => _doc._root._children[0]; //: Node
 
         /// <summary>
         /// Returns a collection of all <form> elements in the document
@@ -324,7 +371,7 @@ namespace Litehtml
         /// <value>
         /// The forms.
         /// </value>
-        HTMLCollection forms { get; }
+        public HTMLCollection forms => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the current element that is displayed in fullscreen mode
@@ -332,41 +379,73 @@ namespace Litehtml
         /// <value>
         /// The fullscreen element.
         /// </value>
-        Element fullscreenElement { get; }
+        public Element fullscreenElement => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a Boolean value indicating whether the document can be viewed in fullscreen mode
         /// </summary>
         /// <returns></returns>
-        bool fullscreenEnabled();
+        public bool fullscreenEnabled() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the element that has the ID attribute with the specified value
         /// </summary>
         /// <param name="elementID">The element identifier.</param>
         /// <returns></returns>
-        Element getElementById(string elementID);
+        public Element getElementById(string elementID)
+        {
+            var elem = new css_element_selector();
+            var attr = new css_attribute_selector
+            {
+                val = elementID,
+                condition = attr_select_condition.equal,
+                attribute = "id"
+            };
+            elem._attrs.Add(attr);
+            var sel = new css_selector(elem);
+            return _doc._root.select_one(sel);
+        }
 
         /// <summary>
         /// Returns a NodeList containing all elements with the specified class name
         /// </summary>
         /// <param name="classname">The classname.</param>
         /// <returns></returns>
-        NodeList getElementsByClassName(string classname);
+        public NodeList getElementsByClassName(string classname) => _doc._root.getElementsByClassName(classname);
 
         /// <summary>
         /// Returns a NodeList containing all elements with a specified name
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        NodeList getElementsByName(string name);
+        public NodeList getElementsByName(string name)
+        {
+            var elem = new css_element_selector();
+            var attr = new css_attribute_selector
+            {
+                val = name,
+                condition = attr_select_condition.equal,
+                attribute = "name"
+            };
+            elem._attrs.Add(attr);
+            var sel = new css_selector(elem);
+            return new NodeList(_doc._root.select_all(sel));
+        }
 
         /// <summary>
         /// Returns a NodeList containing all elements with the specified tag name
         /// </summary>
         /// <param name="tagname">The tagname.</param>
         /// <returns></returns>
-        NodeList getElementsByTagName(string tagname);
+        public NodeList getElementsByTagName(string tagname) => _doc._root.getElementsByTagName(tagname);
+
+        /// <summary>
+        /// Returns true if an element has any child nodes, otherwise false
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [has child nodes]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool hasChildNodes() => _doc._root._children.Count > 0; //: Node
 
         /// <summary>
         /// Returns a Boolean value indicating whether the document has focus
@@ -374,7 +453,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if this instance has focus; otherwise, <c>false</c>.
         /// </returns>
-        bool hasFocus();
+        public bool hasFocus() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the <head> element of the document
@@ -382,7 +461,7 @@ namespace Litehtml
         /// <value>
         /// The head.
         /// </value>
-        Element head { get; }
+        public Element head => throw new NotImplementedException();
 
         /// <summary>
         ///Returns a collection of all <img> elements in the document
@@ -390,7 +469,7 @@ namespace Litehtml
         /// <value>
         /// The images.
         /// </value>
-        HTMLCollection images { get; }
+        public HTMLCollection images => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the DOMImplementation object that handles this document
@@ -398,7 +477,7 @@ namespace Litehtml
         /// <value>
         /// The implementation.
         /// </value>
-        DocumentImplementation implementation { get; }
+        public DocumentImplementation implementation => throw new NotImplementedException();
 
         /// <summary>
         /// Imports a node from another document
@@ -406,7 +485,7 @@ namespace Litehtml
         /// <param name="node">The node.</param>
         /// <param name="deep">if set to <c>true</c> [deep].</param>
         /// <returns></returns>
-        Node importNode(Node node, bool deep);
+        public Node importNode(Node node, bool deep) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the encoding, character set, used for the document
@@ -414,7 +493,42 @@ namespace Litehtml
         /// <value>
         /// The input encoding.
         /// </value>
-        string inputEncoding { get; }
+        public string inputEncoding => "UTF-8";
+
+        /// <summary>
+        /// Returns true if a specified namespaceURI is the default, otherwise false
+        /// </summary>
+        /// <param name="namespaceURI">The namespace URI.</param>
+        /// <returns>
+        ///   <c>true</c> if [is default namespace] [the specified namespace URI]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException(); //: Node
+
+        /// <summary>
+        /// Checks if two elements are equal
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>
+        ///   <c>true</c> if [is equal node] [the specified node]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool isEqualNode(Node node) => throw new NotImplementedException(); //: Node
+
+        /// <summary>
+        /// Checks if two elements are the same node
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>
+        ///   <c>true</c> if [is same node] [the specified node]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool isSameNode(Node node) => throw new NotImplementedException(); //: Node
+
+        /// <summary>
+        /// Returns the last child node of an element
+        /// </summary>
+        /// <value>
+        /// The last child.
+        /// </value>
+        public override Node lastChild { get { var children = _doc._root._children; return children.Count > 0 ? children[children.Count - 1] : null; } } //: Node
 
         /// <summary>
         /// Returns the date and time the document was last modified
@@ -422,7 +536,7 @@ namespace Litehtml
         /// <value>
         /// The last modified.
         /// </value>
-        DateTime lastModified { get; } //: string
+        public DateTime lastModified => throw new NotImplementedException(); //: string
 
         /// <summary>
         /// Returns a collection of all <a> and <area> elements in the document that have a href attribute
@@ -430,33 +544,89 @@ namespace Litehtml
         /// <value>
         /// The links.
         /// </value>
-        HTMLCollection links { get; }
+        public HTMLCollection links => throw new NotImplementedException();
+
+        /// <summary>
+        /// Returns the next node at the same node tree level
+        /// </summary>
+        /// <value>
+        /// The next sibling.
+        /// </value>
+        public override Node nextSibling => null; //: Node
+
+        /// <summary>
+        /// Returns the name of a node
+        /// </summary>
+        /// <value>
+        /// The name of the node.
+        /// </value>
+        public override string nodeName => "#document"; //: Node
+
+        /// <summary>
+        /// Returns the node type of a node
+        /// </summary>
+        /// <value>
+        /// The type of the node.
+        /// </value>
+        public override int nodeType => 9; //: Node
+
+        /// <summary>
+        /// Sets or returns the value of a node
+        /// </summary>
+        /// <value>
+        /// The node value.
+        /// </value>
+        public override string nodeValue { get => null; set { } } //: Node
 
         /// <summary>
         /// Removes empty Text nodes, and joins adjacent nodes
         /// </summary>
-        void normalize();
+        public override void normalize() => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Opens an HTML output stream to collect output from document.write()
         /// </summary>
         /// <param name="MIMEtype">The mim etype.</param>
         /// <param name="replace">The replace.</param>
-        void open(string MIMEtype = null, string replace = null);
+        public void open(string MIMEtype = null, string replace = null) => throw new NotImplementedException();
+
+        /// <summary>
+        /// Returns the root element (document object) for an element
+        /// </summary>
+        /// <value>
+        /// The owner document.
+        /// </value>
+        public override Document ownerDocument => null; //: Node
+
+        /// <summary>
+        /// Returns the parent node of an element
+        /// </summary>
+        /// <value>
+        /// The parent node.
+        /// </value>
+        public override Node parentNode => null; //: Node
+
+        /// <summary>
+        /// Returns the previous node at the same node tree level
+        /// </summary>
+        /// <value>
+        /// The previous sibling.
+        /// </value>
+        public override Node previousSibling => null; //: Node
 
         /// <summary>
         /// Returns the first element that matches a specified CSS selector(s) in the document
         /// </summary>
         /// <param name="selectors">The selectors.</param>
         /// <returns></returns>
-        Element querySelector(string selectors);
+        public Element querySelector(string selectors) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a static NodeList containing all elements that matches a specified CSS selector(s) in the document
         /// </summary>
         /// <param name="selectors">The selectors.</param>
         /// <returns></returns>
-        NodeList querySelectorAll(string selectors);
+        public NodeList querySelectorAll(string selectors) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the (loading) status of the document
@@ -464,7 +634,7 @@ namespace Litehtml
         /// <value>
         /// The state of the ready.
         /// </value>
-        string readyState { get; }
+        public string readyState => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the URL of the document that loaded the current document
@@ -472,7 +642,14 @@ namespace Litehtml
         /// <value>
         /// The referrer.
         /// </value>
-        string referrer { get; }
+        public string referrer => throw new NotImplementedException();
+
+        /// <summary>
+        /// Removes a child node from an element
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public override Node removeChild(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Removes an event handler from the document (that has been attached with the addEventListener() method)
@@ -480,16 +657,24 @@ namespace Litehtml
         /// <param name="event">The event.</param>
         /// <param name="function">The function.</param>
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
-        void removeEventListener(string @event, string function, bool useCapture = false);
+        public void removeEventListener(string @event, string function, bool useCapture = false) => throw new NotImplementedException();
 
         /// <summary>
-        /// Renames the specified node
+        /// NotSupported - Renames the specified node
         /// </summary>
         /// <param name="node">The node.</param>
         /// <param name="namespaceURI">The namespace URI.</param>
         /// <param name="nodename">The nodename.</param>
         /// <returns></returns>
-        Node renameNode(Node node, string namespaceURI, string nodename);
+        public Node renameNode(Node node, string namespaceURI, string nodename) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Replaces a child node in an element
+        /// </summary>
+        /// <param name="newnode">The newnode.</param>
+        /// <param name="oldnode">The oldnode.</param>
+        /// <returns></returns>
+        public override Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns a collection of <script> elements in the document
@@ -497,15 +682,15 @@ namespace Litehtml
         /// <value>
         /// The scripts.
         /// </value>
-        HTMLCollection scripts { get; }
+        public HTMLCollection scripts => throw new NotImplementedException();
 
         /// <summary>
-        /// Sets or returns whether error-checking is enforced or not
+        /// Sets or returns the textual content of a node and its descendants
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [strict error checking]; otherwise, <c>false</c>.
+        /// The content of the text.
         /// </value>
-        bool strictErrorChecking { get; set; }
+        public override string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
 
         /// <summary>
         /// Sets or returns the title of the document
@@ -513,7 +698,7 @@ namespace Litehtml
         /// <value>
         /// The title.
         /// </value>
-        string title { get; set; }
+        public string title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the full URL of the HTML document
@@ -521,19 +706,19 @@ namespace Litehtml
         /// <value>
         /// The URL.
         /// </value>
-        string URL { get; }
+        public string URL => throw new NotImplementedException();
 
         /// <summary>
         /// Writes HTML expressions or JavaScript code to a document
         /// </summary>
         /// <param name="args">The arguments.</param>
-        void write(params object[] args);
+        public void write(params object[] args) => throw new NotImplementedException();
 
         /// <summary>
         /// Same as write(), but adds a newline character after each statement
         /// </summary>
         /// <param name="args">The arguments.</param>
-        void writeln(params object[] args);
+        public void writeln(params object[] args) => throw new NotImplementedException();
     }
 
     /// <summary>
@@ -551,7 +736,7 @@ namespace Litehtml
 
         public bool dispatchMouseEvent(PlatformMouseEvent platformEvent, string eventType, int detail, element relatedTarget)
         {
-            var mouseEvent = new MouseEvent(eventType, _elem._doc.windowProxy, platformEvent, detail, relatedTarget);
+            //var mouseEvent = new MouseEvent(eventType, _elem._doc.windowProxy, platformEvent, detail, relatedTarget);
             var didNotSwallowEvent = true;
             //    //Debug.Assert(mouseEvent.target == null || mouseEvent.target != relatedTarget);
             //    dispatchEvent(mouseEvent);

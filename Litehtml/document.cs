@@ -38,9 +38,9 @@ namespace Litehtml
         public string followed_tags;
     }
 
-    public partial class document : NodeList, Document
+    public partial class document : Document
     {
-        element _root;
+        internal element _root;
         Icontainer _container;
         script_engine _script;
         Dictionary<string, font_item> _fonts = new Dictionary<string, font_item>();
