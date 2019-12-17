@@ -224,9 +224,6 @@ namespace Litehtml
                     " (nodetype: " + x.nodeType + ")<br>";
                 }
             }
-
-
-
         }
     }
 }
