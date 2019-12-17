@@ -39,7 +39,7 @@ namespace Litehtml
         /// <summary>
         /// Defines a function to be called when the readyState property changes
         /// </summary>
-        public Action<XMLHttpRequest> onreadystatechange { get; set; }
+        public Action<XMLHttpRequest> onreadystatechange;
 
         /// <summary>
         /// Specifies the request

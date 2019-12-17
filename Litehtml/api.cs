@@ -440,6 +440,14 @@ namespace Litehtml
         public NodeList getElementsByTagName(string tagname) => _doc._root.getElementsByTagName(tagname);
 
         /// <summary>
+        /// Not Supported - Returns true if the specified node has any attributes, otherwise false
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance has attributes; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool hasAttributes() => throw new NotSupportedException(); //: Node
+
+        /// <summary>
         /// Returns true if an element has any child nodes, otherwise false
         /// </summary>
         /// <returns>
@@ -1073,7 +1081,7 @@ namespace Litehtml
         /// <returns>
         ///   <c>true</c> if this instance has attributes; otherwise, <c>false</c>.
         /// </returns>
-        public bool hasAttributes() => throw new NotImplementedException();
+        public override bool hasAttributes() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns true if an element has any child nodes, otherwise false
