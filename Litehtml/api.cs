@@ -217,7 +217,7 @@ namespace Litehtml
         /// </summary>
         /// <param name="attributename">The attributename.</param>
         /// <returns></returns>
-        Node createAttribute(string attributename);
+        Attr createAttribute(string attributename);
 
         /// <summary>
         /// Creates a Comment node with the specified text
@@ -542,6 +542,7 @@ namespace Litehtml
     /// </summary>
     public class Element : Node, EventTarget
     {
+        readonly element _elem;
         readonly EventSystem _events = new EventSystem();
 
         public Element() => _elem = (element)this;
@@ -662,7 +663,7 @@ namespace Litehtml
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        public override Node appendChild(Node node) => throw new NotImplementedException();
+        public override Node appendChild(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns a NamedNodeMap of an element's attributes
@@ -670,7 +671,15 @@ namespace Litehtml
         /// <value>
         /// The attributes.
         /// </value>
-        public override NamedNodeMap attributes => new NamedNodeMap(((html_tag)_elem)._attrs);
+        public override NamedNodeMap attributes => new NamedNodeMap(((html_tag)_elem)._attrs); //: Node
+
+        /// <summary>
+        /// Returns the absolute base URI of a node
+        /// </summary>
+        /// <value>
+        /// The base URI.
+        /// </value>
+        public override string baseURI => "base"; //: Node
 
         /// <summary>
         /// Removes focus from an element
@@ -685,10 +694,10 @@ namespace Litehtml
         /// </value>
         public int childElementCount => _elem._children.Count;
 
-        ///// <summary>
-        ///// Returns a collection of an element's child nodes (including text and comment nodes)
-        ///// </summary>
-        //public NodeList childNodes => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns a collection of an element's child nodes (including text and comment nodes)
+        /// </summary>
+        public override NodeList childNodes => new NodeList(_elem._children); //: Node
 
         /// <summary>
         /// Returns a collection of an element's child element (excluding text and comment nodes)
@@ -748,19 +757,19 @@ namespace Litehtml
         /// </value>
         public int clientWidth => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Clones an element
-        ///// </summary>
-        ///// <param name="deep">if set to <c>true</c> [deep].</param>
-        ///// <returns></returns>
-        //public Node cloneNode(bool deep = false) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Clones an element
+        /// </summary>
+        /// <param name="deep">if set to <c>true</c> [deep].</param>
+        /// <returns></returns>
+        public override Node cloneNode(bool deep = false) => throw new NotImplementedException(); //: Node
 
-        ///// <summary>
-        ///// Compares the document position of two elements
-        ///// </summary>
-        ///// <param name="node">The node.</param>
-        ///// <returns></returns>
-        //public int compareDocumentPosition(Node node) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Compares the document position of two elements
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public override int compareDocumentPosition(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns true if a node is a descendant of a node, otherwise false
@@ -792,13 +801,13 @@ namespace Litehtml
         /// </summary>
         public void exitFullscreen() => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns the first child node of an element
-        ///// </summary>
-        ///// <value>
-        ///// The first child.
-        ///// </value>
-        //public Node firstChild => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the first child node of an element
+        /// </summary>
+        /// <value>
+        /// The first child.
+        /// </value>
+        public override Node firstChild => _elem._children[0]; //: Node
 
         /// <summary>
         /// Returns the first child element of an element
@@ -881,13 +890,13 @@ namespace Litehtml
         /// </returns>
         public bool hasAttributes() => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns true if an element has any child nodes, otherwise false
-        ///// </summary>
-        ///// <returns>
-        /////   <c>true</c> if [has child nodes]; otherwise, <c>false</c>.
-        ///// </returns>
-        //public bool hasChildNodes() => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns true if an element has any child nodes, otherwise false
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [has child nodes]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool hasChildNodes() => _elem._children.Count > 0; //: Node
 
         /// <summary>
         /// Sets or returns the value of the id attribute of an element
@@ -949,32 +958,32 @@ namespace Litehtml
         /// </value>
         public bool isContentEditable => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns true if a specified namespaceURI is the default, otherwise false
-        ///// </summary>
-        ///// <param name="namespaceURI">The namespace URI.</param>
-        ///// <returns>
-        /////   <c>true</c> if [is default namespace] [the specified namespace URI]; otherwise, <c>false</c>.
-        ///// </returns>
-        //public bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns true if a specified namespaceURI is the default, otherwise false
+        /// </summary>
+        /// <param name="namespaceURI">The namespace URI.</param>
+        /// <returns>
+        ///   <c>true</c> if [is default namespace] [the specified namespace URI]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool isDefaultNamespace(string namespaceURI) => throw new NotImplementedException(); //: Node
 
-        ///// <summary>
-        ///// Checks if two elements are equal
-        ///// </summary>
-        ///// <param name="node">The node.</param>
-        ///// <returns>
-        /////   <c>true</c> if [is equal node] [the specified node]; otherwise, <c>false</c>.
-        ///// </returns>
-        //public bool isEqualNode(Node node) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Checks if two elements are equal
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>
+        ///   <c>true</c> if [is equal node] [the specified node]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool isEqualNode(Node node) => throw new NotImplementedException(); //: Node
 
-        ///// <summary>
-        ///// Checks if two elements are the same node
-        ///// </summary>
-        ///// <param name="node">The node.</param>
-        ///// <returns>
-        /////   <c>true</c> if [is same node] [the specified node]; otherwise, <c>false</c>.
-        ///// </returns>
-        //public bool isSameNode(Node node) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Checks if two elements are the same node
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>
+        ///   <c>true</c> if [is same node] [the specified node]; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool isSameNode(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Sets or returns the value of the lang attribute of an element
@@ -984,13 +993,13 @@ namespace Litehtml
         /// </value>
         public string lang { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        ///// <summary>
-        ///// Returns the last child node of an element
-        ///// </summary>
-        ///// <value>
-        ///// The last child.
-        ///// </value>
-        //public Node lastChild => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the last child node of an element
+        /// </summary>
+        /// <value>
+        /// The last child.
+        /// </value>
+        public override Node lastChild => _elem._children.Count > 0 ? _elem._children[_elem._children.Count - 1] : null; //: Node
 
         /// <summary>
         /// Returns the last child element of an element
@@ -1008,13 +1017,13 @@ namespace Litehtml
         /// </value>
         public string namespaceURI => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns the next node at the same node tree level
-        ///// </summary>
-        ///// <value>
-        ///// The next sibling.
-        ///// </value>
-        //public Node nextSibling => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the next node at the same node tree level
+        /// </summary>
+        /// <value>
+        /// The next sibling.
+        /// </value>
+        public override Node nextSibling => (Node)null; //: Node
 
         /// <summary>
         /// Returns the next element at the same node tree level
@@ -1024,34 +1033,34 @@ namespace Litehtml
         /// </value>
         public Node nextElementSibling => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns the name of a node
-        ///// </summary>
-        ///// <value>
-        ///// The name of the node.
-        ///// </value>
-        //public string nodeName => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the name of a node
+        /// </summary>
+        /// <value>
+        /// The name of the node.
+        /// </value>
+        public override string nodeName => throw new NotImplementedException(); //: Node
 
-        ///// <summary>
-        ///// Returns the node type of a node
-        ///// </summary>
-        ///// <value>
-        ///// The type of the node.
-        ///// </value>
-        //public int nodeType => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the node type of a node
+        /// </summary>
+        /// <value>
+        /// The type of the node.
+        /// </value>
+        public override int nodeType => throw new NotImplementedException(); //: Node
 
-        ///// <summary>
-        ///// Sets or returns the value of a node
-        ///// </summary>
-        ///// <value>
-        ///// The node value.
-        ///// </value>
-        //public string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
+        /// <summary>
+        /// Sets or returns the value of a node
+        /// </summary>
+        /// <value>
+        /// The node value.
+        /// </value>
+        public override string nodeValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
 
-        ///// <summary>
-        ///// Joins adjacent text nodes and removes empty text nodes in an element
-        ///// </summary>
-        //public void normalize() => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Joins adjacent text nodes and removes empty text nodes in an element
+        /// </summary>
+        public override void normalize() => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the height of an element, including padding, border and scrollbar
@@ -1093,21 +1102,21 @@ namespace Litehtml
         /// </value>
         public int offsetTop => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Returns the root element (document object) for an element
-        ///// </summary>
-        ///// <value>
-        ///// The owner document.
-        ///// </value>
-        //public Document ownerDocument => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the root element (document object) for an element
+        /// </summary>
+        /// <value>
+        /// The owner document.
+        /// </value>
+        public override Document ownerDocument => throw new NotImplementedException(); //: Node
 
-        ///// <summary>
-        ///// Returns the parent node of an element
-        ///// </summary>
-        ///// <value>
-        ///// The parent node.
-        ///// </value>
-        //public Node parentNode => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the parent node of an element
+        /// </summary>
+        /// <value>
+        /// The parent node.
+        /// </value>
+        public override Node parentNode => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Returns the parent element node of an element
@@ -1117,13 +1126,13 @@ namespace Litehtml
         /// </value>
         public Element parentElement => _elem._parent;
 
-        ///// <summary>
-        ///// Returns the previous node at the same node tree level
-        ///// </summary>
-        ///// <value>
-        ///// The previous sibling.
-        ///// </value>
-        //public Node previousSibling => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Returns the previous node at the same node tree level
+        /// </summary>
+        /// <value>
+        /// The previous sibling.
+        /// </value>
+        public override Node previousSibling => (Node)null; //: Node
 
         /// <summary>
         /// Returns the previous element at the same node tree level
@@ -1160,12 +1169,12 @@ namespace Litehtml
         /// <returns></returns>
         public Attr removeAttributeNode(Attr attributenode) => throw new NotImplementedException();
 
-        ///// <summary>
-        ///// Removes a child node from an element
-        ///// </summary>
-        ///// <param name="node">The node.</param>
-        ///// <returns></returns>
-        //public Node removeChild(Node node) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Removes a child node from an element
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        public override Node removeChild(Node node) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Removes an event handler that has been attached with the addEventListener() method
@@ -1175,13 +1184,13 @@ namespace Litehtml
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
         public void removeEventListener(string @event, string function, bool useCapture = false) => _events.removeEventListener(@event, null, new EventListenerOptions { capture = useCapture });
 
-        ///// <summary>
-        ///// Replaces a child node in an element
-        ///// </summary>
-        ///// <param name="newnode">The newnode.</param>
-        ///// <param name="oldnode">The oldnode.</param>
-        ///// <returns></returns>
-        //public Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException(); //: Node
+        /// <summary>
+        /// Replaces a child node in an element
+        /// </summary>
+        /// <param name="newnode">The newnode.</param>
+        /// <param name="oldnode">The oldnode.</param>
+        /// <returns></returns>
+        public override Node replaceChild(Node newnode, Node oldnode) => throw new NotImplementedException(); //: Node
 
         /// <summary>
         /// Shows an element in fullscreen mode
@@ -1264,13 +1273,13 @@ namespace Litehtml
         /// </value>
         public string tagName => _elem.get_tagName();
 
-        ///// <summary>
-        ///// Sets or returns the textual content of a node and its descendants
-        ///// </summary>
-        ///// <value>
-        ///// The content of the text.
-        ///// </value>
-        //public string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
+        /// <summary>
+        /// Sets or returns the textual content of a node and its descendants
+        /// </summary>
+        /// <value>
+        /// The content of the text.
+        /// </value>
+        public override string textContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } //: Node
 
         /// <summary>
         /// Sets or returns the value of the title attribute of an element

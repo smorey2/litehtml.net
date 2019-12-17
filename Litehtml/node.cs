@@ -163,7 +163,7 @@ namespace Litehtml
         void Document.addEventListener(string @event, string function, bool useCapture) => throw new NotImplementedException();
         Node Document.adoptNode(Node node) => throw new NotImplementedException();
         void Document.close() => throw new NotImplementedException();
-        Node Document.createAttribute(string attributename) => throw new NotImplementedException();
+        Attr Document.createAttribute(string attributename) => new Attr(null, attributename);
         Node Document.createComment(string text) => throw new NotImplementedException();
         DocumentFragment Document.createDocumentFragment() => throw new NotImplementedException();
         Element Document.createElement(string nodename) => throw new NotImplementedException();
