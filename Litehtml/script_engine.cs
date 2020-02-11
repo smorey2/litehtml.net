@@ -1,3 +1,5 @@
+using System;
+
 namespace Litehtml
 {
     public interface script_engine
@@ -23,7 +25,7 @@ namespace Litehtml
 
         public void addEvent(Element element, string @event, string function)
         {
-            element.addEventListener(@event, function);
+            element.addEventListener(@event, null);
         }
     }
 }

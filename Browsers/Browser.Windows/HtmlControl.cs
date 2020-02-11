@@ -1,22 +1,19 @@
 ﻿using Litehtml;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Console = Litehtml.Console;
-using Screen = Litehtml.Screen;
 
 namespace Browser.Windows
 {
-    public partial class HtmlControl : UserControl, History, Window
+    public partial class HtmlControl : UserControl, History
     {
         //int _max_top;
         //int _max_left;
+        internal readonly Window _window;
         context _context;
-        Webhistory _history;
+        Webhistory _history = new Webhistory();
         WebpageControl _page;
         WebpageControl _page_next;
-        string _defaultStatus;
 
         #region History
 
@@ -29,73 +26,60 @@ namespace Browser.Windows
 
         #region Window
 
-        readonly windowHelper _windowHelper = new windowHelper();
+        class HtmlWindow : Window
+        {
+            HtmlControl _c;
+            public HtmlWindow(HtmlControl c) => _c = c;
 
-        bool Window.closed => ParentForm.Visible;
-        Console Window.console => _windowHelper.console;
-        string Window.defaultStatus { get => _defaultStatus; set => _defaultStatus = value; }
-        Document Window.document => throw new NotImplementedException();
-        Element Window.frameElement => _windowHelper.frameElement;
-        IList<Element> Window.frames => _windowHelper.frames;
-        History Window.history => this;
-        int Window.innerHeight => _page?.Width ?? 0;
-        int Window.innerWidth => _page?.Height ?? 0;
-        int Window.length => 0;
-        Storage Window.localStorage => throw new NotImplementedException();
-        Location Window.location => throw new NotImplementedException();
-        string Window.name { get => ParentForm.Name; set => ParentForm.Name = value; }
-        Navigator Window.navigator => (Navigator)ParentForm;
-        Window Window.opener => this;
-        int Window.outerHeight => Height;
-        int Window.outerWidth => Width;
-        int Window.pageXOffset => throw new NotImplementedException();
-        int Window.pageYOffset => throw new NotImplementedException();
-        Window Window.parent => null;
-        Screen Window.screen => throw new NotImplementedException();
-        int Window.screenLeft => ParentForm.Left;
-        int Window.screenTop => ParentForm.Top;
-        int Window.screenX => ParentForm.Left;
-        int Window.screenY => ParentForm.Top;
-        Storage Window.sessionStorage => throw new NotImplementedException();
-        int Window.scrollX => HorizontalScroll.Value;
-        int Window.scrollY => VerticalScroll.Value;
-        Window Window.self => this;
-        string Window.status { get => ParentForm.Text; set => ParentForm.Text = value; }
-        Window Window.top => this;
-        void Window.alert(string message) => MessageBox.Show(message);
-        string Window.atob(string encodedStr) => _windowHelper.atob(encodedStr);
-        void Window.blur() => ActiveControl = null;
-        string Window.btoa(string str) => _windowHelper.btoa(str);
-        void Window.clearInterval(string var) => _windowHelper.clearInterval(var);
-        void Window.clearTimeout(string id_of_settimeout) => _windowHelper.clearTimeout(id_of_settimeout);
-        void Window.close() => ParentForm.Close();
-        bool Window.confirm(string message) => MessageBox.Show(message) == DialogResult.OK;
-        void Window.focus() => Focus();
-        Style Window.getComputedStyle(string element, string pseudoElement) => _windowHelper.getComputedStyle(element, pseudoElement);
-        object Window.getSelection() => _windowHelper.getSelection();
-        MediaQueryList Window.matchMedia(string mediaQueryString) => _windowHelper.matchMedia(mediaQueryString);
-        void Window.moveBy(int x, int y) { ParentForm.Left += x; ParentForm.Top += y; }
-        void Window.moveTo(int x, int y) { ParentForm.Left = x; ParentForm.Top = y; }
-        Window Window.open(string URL, string name, string specs, bool replace) { open(URL); return this; }
-        void Window.print() => throw new NotImplementedException();
-        string Window.prompt(string text, string defaultText) => throw new NotImplementedException();
-        object Window.requestAnimationFrame() => throw new NotImplementedException();
-        void Window.resizeBy(int width, int height) { ParentForm.Width += width; ParentForm.Height += height; }
-        void Window.resizeTo(int width, int height) { ParentForm.Width = width; ParentForm.Height = height; }
-        void Window.scrollBy(int xnum, int ynum) { HorizontalScroll.Value += xnum; VerticalScroll.Value += xnum; }
-        void Window.scrollTo(int xpos, int ypos) { HorizontalScroll.Value = xpos; VerticalScroll.Value = ypos; }
-        int Window.setInterval(string function, int milliseconds, params object[] args) => _windowHelper.setInterval(function, milliseconds, args);
-        int Window.setTimeout(string function, int milliseconds, params object[] args) => _windowHelper.setTimeout(function, milliseconds, args);
-        void Window.stop() => stop();
+            public override bool closed => _c.ParentForm.Visible;
+            //public override Element frameElement => _windowHelper.frameElement;
+            //public override IList<Element> frames => _windowHelper.frames;
+            public override History history => _c;
+            public override int innerHeight => _c._page?.Width ?? 0;
+            public override int innerWidth => _c._page?.Height ?? 0;
+            public override int length => 0;
+            public override string name { get => _c.ParentForm.Name; set => _c.ParentForm.Name = value; }
+            public override Navigator navigator => (Navigator)_c.ParentForm;
+            public override Window opener => this;
+            public override int outerHeight => _c.Height;
+            public override int outerWidth => _c.Width;
+            public override Window parent => null;
+            public override int screenLeft => _c.ParentForm.Left;
+            public override int screenTop => _c.ParentForm.Top;
+            public override int screenX => _c.ParentForm.Left;
+            public override int screenY => _c.ParentForm.Top;
+            public override int scrollX => _c.HorizontalScroll.Value;
+            public override int scrollY => _c.VerticalScroll.Value;
+            public override Window self => this;
+            public override string status { get => _c.ParentForm.Text; set => _c.ParentForm.Text = value; }
+            public override Window top => this;
+            public override void alert(string message) => MessageBox.Show(message);
+            //public override string atob(string encodedStr) => _windowHelper.atob(encodedStr);
+            public override void blur() => _c.ActiveControl = null;
+            //public override string btoa(string str) => _windowHelper.btoa(str);
+            //public override void clearInterval(string var) => _windowHelper.clearInterval(var);
+            //public override void clearTimeout(string id_of_settimeout) => _windowHelper.clearTimeout(id_of_settimeout);
+            public override void close() => _c.ParentForm.Close();
+            public override bool confirm(string message) => MessageBox.Show(message) == DialogResult.OK;
+            public override void focus() => _c.Focus();
+            //public override Style getComputedStyle(string element, string pseudoElement) => _windowHelper.getComputedStyle(element, pseudoElement);
+            //public override object getSelection() => _windowHelper.getSelection();
+            //public override MediaQueryList matchMedia(string mediaQueryString) => _windowHelper.matchMedia(mediaQueryString);
+            public override void moveBy(int x, int y) { _c.ParentForm.Left += x; _c.ParentForm.Top += y; }
+            public override void moveTo(int x, int y) { _c.ParentForm.Left = x; _c.ParentForm.Top = y; }
+            public override Window open(string URL, string name, string specs, bool replace) { _c.open(URL); return this; }
+            public override void resizeBy(int width, int height) { _c.ParentForm.Width += width; _c.ParentForm.Height += height; }
+            public override void resizeTo(int width, int height) { _c.ParentForm.Width = width; _c.ParentForm.Height = height; }
+            public override void scrollBy(int xnum, int ynum) { _c.HorizontalScroll.Value += xnum; _c.VerticalScroll.Value += xnum; }
+            public override void scrollTo(int xpos, int ypos) { _c.HorizontalScroll.Value = xpos; _c.VerticalScroll.Value = ypos; }
+            //public override int setInterval(string function, int milliseconds, params object[] args) => _windowHelper.setInterval(function, milliseconds, args);
+            //public override int setTimeout(string function, int milliseconds, params object[] args) => _windowHelper.setTimeout(function, milliseconds, args);
+            public override void stop() => _c.stop();
+        }
 
         #endregion
 
-        public HtmlControl()
-        {
-            _history = new Webhistory();
-            _defaultStatus = "browser";
-            InitializeComponent();
-        }
+        public HtmlControl() { InitializeComponent(); _window = new HtmlWindow(this); }
 
         public void create(context context) => _context = context;
 
@@ -415,7 +399,7 @@ namespace Browser.Windows
         void set_caption()
         {
             var page = get_page();
-            Parent.Text = page?._caption ?? _defaultStatus;
+            Parent.Text = page?._caption ?? _window.defaultStatus;
         }
 
         void OnMouseMove(int x, int y)

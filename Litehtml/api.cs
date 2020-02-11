@@ -43,98 +43,98 @@ namespace Litehtml
     /// Console
     /// https://www.w3schools.com/jsref/obj_console.asp
     /// </summary>
-    public interface Console
+    public class Console
     {
         /// <summary>
         /// Writes an error message to the console if the assertion is false
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <param name="message">The message.</param>
-        void assert(object expression, object message);
+        public void assert(object expression, object message) => throw new NotImplementedException();
 
         /// <summary>
         /// Clears the console
         /// </summary>
-        void clear();
+        public void clear() => throw new NotImplementedException();
 
         /// <summary>
         /// Logs the number of times that this particular call to count() has been called
         /// </summary>
         /// <param name="label">The label.</param>
-        void count(string label = null);
+        public void count(string label = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Outputs an error message to the console
         /// </summary>
         /// <param name="message">The message.</param>
-        void error(object message);
+        public void error(object message) => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a new inline group in the console. This indents following console messages by an additional level, until console.groupEnd() is called
         /// </summary>
         /// <param name="label">The label.</param>
-        void group(string label = null);
+        public void group(string label = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a new inline group in the console. However, the new group is created collapsed. The user will need to use the disclosure button to expand it
         /// </summary>
         /// <param name="label">The label.</param>
-        void groupCollapsed(string label = null);
+        public void groupCollapsed(string label = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Exits the current inline group in the console
         /// </summary>
-        void groupEnd();
+        public void groupEnd() => throw new NotImplementedException();
 
         /// <summary>
         /// Outputs an informational message to the console
         /// </summary>
         /// <param name="message">The message.</param>
-        void info(object message);
+        public void info(object message) => throw new NotImplementedException();
 
         /// <summary>
         /// Outputs a message to the console
         /// </summary>
         /// <param name="message">The message.</param>
-        void log(object message);
+        public void log(object message) => throw new NotImplementedException();
 
         /// <summary>
         /// Displays tabular data as a table
         /// </summary>
         /// <param name="tabledata">The tabledata.</param>
         /// <param name="tablecolumns">The tablecolumns.</param>
-        void table(object tabledata, object[] tablecolumns = null);
+        public void table(object tabledata, string[] tablecolumns = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Starts a timer (can track how long an operation takes)
         /// </summary>
         /// <param name="label">The label.</param>
-        void time(string label = null);
+        public void time(string label = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Stops a timer that was previously started by console.time()
         /// </summary>
         /// <param name="label">The label.</param>
-        void timeEnd(string label = null);
+        public void timeEnd(string label = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Outputs a stack trace to the console
         /// </summary>
         /// <param name="label">The label.</param>
-        void trace(string label = null);
+        public void trace(string label = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Outputs a warning message to the console
         /// </summary>
         /// <param name="message">The message.</param>
-        void warn(object message);
+        public void warn(object message) => throw new NotImplementedException();
     }
 
     /// <summary>
     /// Document
     /// https://www.w3schools.com/jsref/dom_obj_document.asp
     /// </summary>
-    public class Document : Node // NodeList,
+    public class Document : Node
     {
         readonly document _doc;
 
@@ -209,7 +209,7 @@ namespace Litehtml
         /// <value>
         /// The body.
         /// </value>
-        Element body { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Element body { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the character encoding for the document
@@ -222,7 +222,7 @@ namespace Litehtml
         /// <summary>
         /// Returns a collection of an element's child nodes (including text and comment nodes)
         /// </summary>
-        public override NodeList childNodes => new NodeList(_doc._root._children); //: Node
+        public override NodeList<Node> childNodes => new NodeList<Node>(_doc._root._children); //: Node
 
         /// <summary>
         /// Clones an element
@@ -411,14 +411,14 @@ namespace Litehtml
         /// </summary>
         /// <param name="classname">The classname.</param>
         /// <returns></returns>
-        public NodeList getElementsByClassName(string classname) => _doc._root.getElementsByClassName(classname);
+        public NodeList<Element> getElementsByClassName(string classname) => _doc._root.getElementsByClassName(classname);
 
         /// <summary>
         /// Returns a NodeList containing all elements with a specified name
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public NodeList getElementsByName(string name)
+        public NodeList<Element> getElementsByName(string name)
         {
             var elem = new css_element_selector();
             var attr = new css_attribute_selector
@@ -429,7 +429,7 @@ namespace Litehtml
             };
             elem._attrs.Add(attr);
             var sel = new css_selector(elem);
-            return new NodeList(_doc._root.select_all(sel));
+            return new NodeList<Element>(_doc._root.select_all(sel));
         }
 
         /// <summary>
@@ -437,7 +437,7 @@ namespace Litehtml
         /// </summary>
         /// <param name="tagname">The tagname.</param>
         /// <returns></returns>
-        public NodeList getElementsByTagName(string tagname) => _doc._root.getElementsByTagName(tagname);
+        public NodeList<Element> getElementsByTagName(string tagname) => _doc._root.getElementsByTagName(tagname);
 
         /// <summary>
         /// Not Supported - Returns true if the specified node has any attributes, otherwise false
@@ -634,7 +634,7 @@ namespace Litehtml
         /// </summary>
         /// <param name="selectors">The selectors.</param>
         /// <returns></returns>
-        public NodeList querySelectorAll(string selectors) => throw new NotImplementedException();
+        public NodeList<Element> querySelectorAll(string selectors) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the (loading) status of the document
@@ -849,7 +849,7 @@ namespace Litehtml
         /// <param name="event">The event.</param>
         /// <param name="function">The function.</param>
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
-        public void addEventListener(string @event, string function, bool useCapture = false) => _events.addEventListener(@event, null, new EventListenerOptions { capture = useCapture });
+        public void addEventListener(string @event, Action<Element> function, bool useCapture = false) => _events.addEventListener(@event, null, new EventListenerOptions { capture = useCapture });
 
         /// <summary>
         /// Adds a new child node, to an element, as the last child node
@@ -890,7 +890,7 @@ namespace Litehtml
         /// <summary>
         /// Returns a collection of an element's child nodes (including text and comment nodes)
         /// </summary>
-        public override NodeList childNodes => new NodeList(_elem._children); //: Node
+        public override NodeList<Node> childNodes => new NodeList<Node>(_elem._children); //: Node
 
         /// <summary>
         /// Returns a collection of an element's child element (excluding text and comment nodes)
@@ -1008,7 +1008,7 @@ namespace Litehtml
         /// <value>
         /// The first element child.
         /// </value>
-        public Node firstElementChild => _elem._children.Count > 0 ? _elem._children[0] : null;
+        public Element firstElementChild => _elem._children.Count > 0 ? _elem._children[0] : null;
 
         /// <summary>
         /// Gives focus to an element
@@ -1040,7 +1040,7 @@ namespace Litehtml
         /// </summary>
         /// <param name="classname">The classname.</param>
         /// <returns></returns>
-        public NodeList getElementsByClassName(string classname)
+        public NodeList<Element> getElementsByClassName(string classname)
         {
             var elem = new css_element_selector();
             var attr = new css_attribute_selector
@@ -1051,7 +1051,7 @@ namespace Litehtml
             };
             elem._attrs.Add(attr);
             var sel = new css_selector(elem);
-            return new NodeList(_elem.select_all(sel));
+            return new NodeList<Element>(_elem.select_all(sel));
         }
 
         /// <summary>
@@ -1059,11 +1059,11 @@ namespace Litehtml
         /// </summary>
         /// <param name="tagname">The tagname.</param>
         /// <returns></returns>
-        public NodeList getElementsByTagName(string tagname)
+        public NodeList<Element> getElementsByTagName(string tagname)
         {
             var elem = new css_element_selector { _tag = tagname.ToLowerInvariant() };
             var sel = new css_selector(elem);
-            return new NodeList(_elem.select_all(sel));
+            return new NodeList<Element>(_elem.select_all(sel));
         }
 
         /// <summary>
@@ -1200,7 +1200,7 @@ namespace Litehtml
         /// <value>
         /// The last element child.
         /// </value>
-        public Node lastElementChild => _elem._children.Count > 0 ? _elem._children[_elem._children.Count - 1] : null;
+        public Element lastElementChild => _elem._children.Count > 0 ? _elem._children[_elem._children.Count - 1] : null;
 
         /// <summary>
         /// Returns the namespace URI of an element
@@ -1224,7 +1224,7 @@ namespace Litehtml
         /// <value>
         /// The next element sibling.
         /// </value>
-        public Node nextElementSibling => throw new NotImplementedException();
+        public Element nextElementSibling => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the name of a node
@@ -1264,14 +1264,6 @@ namespace Litehtml
         public int offsetHeight => throw new NotImplementedException();
 
         /// <summary>
-        /// Returns the width of an element, including padding, border and scrollbar
-        /// </summary>
-        /// <value>
-        /// The width of the offset.
-        /// </value>
-        public int offsetWidth => throw new NotImplementedException();
-
-        /// <summary>
         /// Returns the horizontal offset position of an element
         /// </summary>
         /// <value>
@@ -1294,6 +1286,16 @@ namespace Litehtml
         /// The offset top.
         /// </value>
         public int offsetTop => throw new NotImplementedException();
+
+        /// <summary>
+        /// Returns the width of an element, including padding, border and scrollbar
+        /// </summary>
+        /// <value>
+        /// The width of the offset.
+        /// </value>
+        public int offsetWidth => throw new NotImplementedException();
+
+        public void on(string @event, Action<Window> function) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the root element (document object) for an element
@@ -1333,7 +1335,7 @@ namespace Litehtml
         /// <value>
         /// The previous element sibling.
         /// </value>
-        public Node previousElementSibling => throw new NotImplementedException();
+        public Element previousElementSibling => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the first child element that matches a specified CSS selector(s) of an element
@@ -1347,7 +1349,7 @@ namespace Litehtml
         /// </summary>
         /// <param name="selectors">The selectors.</param>
         /// <returns></returns>
-        public NodeList querySelectorAll(string selectors) => new NodeList(_elem.select_all(selectors));
+        public NodeList<Element> querySelectorAll(string selectors) => new NodeList<Element>(_elem.select_all(selectors));
 
         /// <summary>
         /// Removes a specified attribute from an element
@@ -1375,7 +1377,7 @@ namespace Litehtml
         /// <param name="event">The event.</param>
         /// <param name="function">The function.</param>
         /// <param name="useCapture">if set to <c>true</c> [use capture].</param>
-        public void removeEventListener(string @event, string function, bool useCapture = false) => _events.removeEventListener(@event, null, new EventListenerOptions { capture = useCapture });
+        public void removeEventListener(string @event, Action<Element> function, bool useCapture = false) => _events.removeEventListener(@event, null, new EventListenerOptions { capture = useCapture });
 
         /// <summary>
         /// Replaces a child node in an element
@@ -1410,7 +1412,7 @@ namespace Litehtml
         /// <value>
         /// The scroll left.
         /// </value>
-        public int scrollLeft => throw new NotImplementedException();
+        public int scrollLeft { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Sets or returns the number of pixels an element's content is scrolled vertically
@@ -1418,7 +1420,7 @@ namespace Litehtml
         /// <value>
         /// The scroll top.
         /// </value>
-        public int scrollTop => throw new NotImplementedException();
+        public int scrollTop { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the entire width of an element, including padding
@@ -1456,7 +1458,7 @@ namespace Litehtml
         /// <value>
         /// The index of the tab.
         /// </value>
-        public int tabIndex { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string tabIndex { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the tag name of an element
@@ -3382,7 +3384,7 @@ namespace Litehtml
     /// Window
     /// https://www.w3schools.com/jsref/obj_window.asp
     /// </summary>
-    public interface Window
+    public class Window
     {
         /// <summary>
         /// Returns a Boolean value indicating whether a window has been closed or not
@@ -3390,7 +3392,7 @@ namespace Litehtml
         /// <value>
         ///   <c>true</c> if closed; otherwise, <c>false</c>.
         /// </value>
-        bool closed { get; }
+        public virtual bool closed => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a reference to the Console object, which provides methods for logging information to the browser's console (See Console object)
@@ -3398,7 +3400,7 @@ namespace Litehtml
         /// <value>
         /// The console.
         /// </value>
-        Console console { get; }
+        public virtual Console console { get; } = new Console();
 
         /// <summary>
         /// Sets or returns the default text in the statusbar of a window
@@ -3406,7 +3408,7 @@ namespace Litehtml
         /// <value>
         /// The default status.
         /// </value>
-        string defaultStatus { get; set; }
+        public virtual string defaultStatus { get; set; } = "browser";
 
         /// <summary>
         /// Returns the Document object for the window (See Document object)
@@ -3414,7 +3416,7 @@ namespace Litehtml
         /// <value>
         /// The document.
         /// </value>
-        Document document { get; }
+        public virtual Document document => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the <iframe> element in which the current window is inserted
@@ -3422,7 +3424,7 @@ namespace Litehtml
         /// <value>
         /// The frame element.
         /// </value>
-        Element frameElement { get; }
+        public virtual Element frameElement => throw new NotImplementedException();
 
         /// <summary>
         /// Returns all <iframe> elements in the current window
@@ -3430,7 +3432,7 @@ namespace Litehtml
         /// <value>
         /// The frames.
         /// </value>
-        IList<Element> frames { get; }
+        public virtual IList<Element> frames => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the History object for the window (See History object)
@@ -3438,7 +3440,7 @@ namespace Litehtml
         /// <value>
         /// The history.
         /// </value>
-        History history { get; }
+        public virtual History history => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the height of the window's content area (viewport) including scrollbars
@@ -3446,7 +3448,7 @@ namespace Litehtml
         /// <value>
         /// The height of the inner.
         /// </value>
-        int innerHeight { get; }
+        public virtual int innerHeight => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the width of a window's content area (viewport) including scrollbars
@@ -3454,7 +3456,7 @@ namespace Litehtml
         /// <value>
         /// The width of the inner.
         /// </value>
-        int innerWidth { get; }
+        public virtual int innerWidth => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the number of <iframe> elements in the current window
@@ -3462,7 +3464,7 @@ namespace Litehtml
         /// <value>
         /// The length.
         /// </value>
-        int length { get; }
+        public virtual int length => throw new NotImplementedException();
 
         /// <summary>
         /// Allows to save key/value pairs in a web browser. Stores the data with no expiration date
@@ -3470,7 +3472,7 @@ namespace Litehtml
         /// <value>
         /// The local storage.
         /// </value>
-        Storage localStorage { get; }
+        public virtual Storage localStorage => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the Location object for the window (See Location object)
@@ -3478,7 +3480,7 @@ namespace Litehtml
         /// <value>
         /// The location.
         /// </value>
-        Location location { get; }
+        public virtual Location location => throw new NotImplementedException();
 
         /// <summary>
         /// Sets or returns the name of a window
@@ -3486,7 +3488,7 @@ namespace Litehtml
         /// <value>
         /// The name.
         /// </value>
-        string name { get; set; }
+        public virtual string name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the Navigator object for the window (See Navigator object)
@@ -3494,7 +3496,9 @@ namespace Litehtml
         /// <value>
         /// The navigator.
         /// </value>
-        Navigator navigator { get; }
+        public virtual Navigator navigator => throw new NotImplementedException();
+
+        public virtual void on(string @event, Action<Window> function) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a reference to the window that created the window
@@ -3502,7 +3506,7 @@ namespace Litehtml
         /// <value>
         /// The opener.
         /// </value>
-        Window opener { get; }
+        public virtual Window opener => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the height of the browser window, including toolbars/scrollbars
@@ -3510,7 +3514,7 @@ namespace Litehtml
         /// <value>
         /// The height of the outer.
         /// </value>
-        int outerHeight { get; }
+        public virtual int outerHeight => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the width of the browser window, including toolbars/scrollbars
@@ -3518,7 +3522,7 @@ namespace Litehtml
         /// <value>
         /// The width of the outer.
         /// </value>
-        int outerWidth { get; }
+        public virtual int outerWidth => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the pixels the current document has been scrolled (horizontally) from the upper left corner of the window
@@ -3526,7 +3530,7 @@ namespace Litehtml
         /// <value>
         /// The page x offset.
         /// </value>
-        int pageXOffset { get; }
+        public virtual int pageXOffset => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the pixels the current document has been scrolled (vertically) from the upper left corner of the window
@@ -3534,7 +3538,7 @@ namespace Litehtml
         /// <value>
         /// The page y offset.
         /// </value>
-        int pageYOffset { get; }
+        public virtual int pageYOffset => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the parent window of the current window
@@ -3542,7 +3546,7 @@ namespace Litehtml
         /// <value>
         /// The parent.
         /// </value>
-        Window parent { get; }
+        public virtual Window parent => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the Screen object for the window (See Screen object)
@@ -3550,7 +3554,7 @@ namespace Litehtml
         /// <value>
         /// The screen.
         /// </value>
-        Screen screen { get; }
+        public virtual Screen screen => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the horizontal coordinate of the window relative to the screen
@@ -3558,7 +3562,7 @@ namespace Litehtml
         /// <value>
         /// The screen left.
         /// </value>
-        int screenLeft { get; }
+        public virtual int screenLeft => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the vertical coordinate of the window relative to the screen
@@ -3566,7 +3570,7 @@ namespace Litehtml
         /// <value>
         /// The screen top.
         /// </value>
-        int screenTop { get; }
+        public virtual int screenTop => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the horizontal coordinate of the window relative to the screen
@@ -3574,7 +3578,7 @@ namespace Litehtml
         /// <value>
         /// The screen x.
         /// </value>
-        int screenX { get; }
+        public virtual int screenX => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the vertical coordinate of the window relative to the screen
@@ -3582,7 +3586,7 @@ namespace Litehtml
         /// <value>
         /// The screen y.
         /// </value>
-        int screenY { get; }
+        public virtual int screenY => throw new NotImplementedException();
 
         /// <summary>
         /// Allows to save key/value pairs in a web browser. Stores the data for one session
@@ -3590,7 +3594,7 @@ namespace Litehtml
         /// <value>
         /// The session storage.
         /// </value>
-        Storage sessionStorage { get; }
+        public virtual Storage sessionStorage => throw new NotImplementedException();
 
         /// <summary>
         /// An alias of pageXOffset
@@ -3598,7 +3602,7 @@ namespace Litehtml
         /// <value>
         /// The scroll x.
         /// </value>
-        int scrollX { get; }
+        public virtual int scrollX => throw new NotImplementedException();
 
         /// <summary>
         /// An alias of pageYOffset
@@ -3606,7 +3610,7 @@ namespace Litehtml
         /// <value>
         /// The scroll y.
         /// </value>
-        int scrollY { get; }
+        public virtual int scrollY => throw new NotImplementedException();
 
         /// <summary>
         /// Returns the current window
@@ -3614,7 +3618,7 @@ namespace Litehtml
         /// <value>
         /// The self.
         /// </value>
-        Window self { get; }
+        public virtual Window self => this;
 
         /// <summary>
         /// Sets or returns the text in the statusbar of a window
@@ -3622,7 +3626,7 @@ namespace Litehtml
         /// <value>
         /// The status.
         /// </value>
-        string status { get; set; }
+        public virtual string status { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Returns the topmost browser window
@@ -3630,61 +3634,61 @@ namespace Litehtml
         /// <value>
         /// The top.
         /// </value>
-        Window top { get; }
+        public virtual Window top => throw new NotImplementedException();
 
         /// <summary>
         /// Displays an alert box with a message and an OK button
         /// </summary>
         /// <param name="message">The message.</param>
-        void alert(string message);
+        public virtual void alert(string message) => throw new NotImplementedException();
 
         /// <summary>
         /// Decodes a base-64 encoded string
         /// </summary>
         /// <param name="encodedStr">The encoded string.</param>
         /// <returns></returns>
-        string atob(string encodedStr);
+        public virtual string atob(string encodedStr) => throw new NotImplementedException();
 
         /// <summary>
         /// Removes focus from the current window
         /// </summary>
-        void blur();
+        public virtual void blur() => throw new NotImplementedException();
 
         /// <summary>
         /// Encodes a string in base-64
         /// </summary>
         /// <param name="str">The string.</param>
         /// <returns></returns>
-        string btoa(string str);
+        public virtual string btoa(string str) => throw new NotImplementedException();
 
         /// <summary>
         /// Clears a timer set with setInterval()
         /// </summary>
         /// <param name="var">The variable.</param>
-        void clearInterval(string var);
+        public virtual void clearInterval(string var) => throw new NotImplementedException();
 
         /// <summary>
         /// Clears a timer set with setTimeout()
         /// </summary>
         /// <param name="id_of_settimeout">The identifier of settimeout.</param>
-        void clearTimeout(string id_of_settimeout);
+        public virtual void clearTimeout(string id_of_settimeout) => throw new NotImplementedException();
 
         /// <summary>
         /// Closes the current window
         /// </summary>
-        void close();
+        public virtual void close() => throw new NotImplementedException();
 
         /// <summary>
         /// Displays a dialog box with a message and an OK and a Cancel button
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        bool confirm(string message);
+        public virtual bool confirm(string message) => throw new NotImplementedException();
 
         /// <summary>
         /// Sets focus to the current window
         /// </summary>
-        void focus();
+        public virtual void focus() => throw new NotImplementedException();
 
         /// <summary>
         /// Gets the current computed CSS styles applied to an element
@@ -3692,34 +3696,34 @@ namespace Litehtml
         /// <param name="element">The element.</param>
         /// <param name="pseudoElement">The pseudo element.</param>
         /// <returns></returns>
-        Style getComputedStyle(string element, string pseudoElement);
+        public virtual Style getComputedStyle(string element, string pseudoElement) => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a Selection object representing the range of text selected by the user
         /// </summary>
         /// <returns></returns>
-        object getSelection();
+        public virtual object getSelection() => throw new NotImplementedException();
 
         /// <summary>
         /// Returns a MediaQueryList object representing the specified CSS media query string
         /// </summary>
         /// <param name="mediaQueryString">The media query string.</param>
         /// <returns></returns>
-        MediaQueryList matchMedia(string mediaQueryString);
+        public virtual MediaQueryList matchMedia(string mediaQueryString) => throw new NotImplementedException();
 
         /// <summary>
         /// Moves a window relative to its current position
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        void moveBy(int x, int y);
+        public virtual void moveBy(int x, int y) => throw new NotImplementedException();
 
         /// <summary>
         /// Moves a window to the specified position
         /// </summary>
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
-        void moveTo(int x, int y);
+        public virtual void moveTo(int x, int y) => throw new NotImplementedException();
 
         /// <summary>
         /// Opens a new browser window
@@ -3729,12 +3733,12 @@ namespace Litehtml
         /// <param name="specs">The specs.</param>
         /// <param name="replace">The replace.</param>
         /// <returns></returns>
-        Window open(string URL = null, string name = null, string specs = null, bool replace = true);
+        public virtual Window open(string URL = null, string name = null, string specs = null, bool replace = true) => throw new NotImplementedException();
 
         /// <summary>
         /// Prints the content of the current window
         /// </summary>
-        void print();
+        public virtual void print() => throw new NotImplementedException();
 
         /// <summary>
         /// Displays a dialog box that prompts the visitor for input
@@ -3742,41 +3746,41 @@ namespace Litehtml
         /// <param name="text">The text.</param>
         /// <param name="defaultText">The default text.</param>
         /// <returns></returns>
-        string prompt(string text, string defaultText = null);
+        public virtual string prompt(string text, string defaultText = null) => throw new NotImplementedException();
 
         /// <summary>
         /// Requests the browser to call a function to update an animation before the next repaint
         /// </summary>
         /// <returns></returns>
-        object requestAnimationFrame();
+        public virtual object requestAnimationFrame() => throw new NotImplementedException();
 
         /// <summary>
         /// Resizes the window by the specified pixels
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        void resizeBy(int width, int height);
+        public virtual void resizeBy(int width, int height) => throw new NotImplementedException();
 
         /// <summary>
         /// Resizes the window to the specified width and height
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        void resizeTo(int width, int height);
+        public virtual void resizeTo(int width, int height) => throw new NotImplementedException();
 
         /// <summary>
         /// Scrolls the document by the specified number of pixels
         /// </summary>
         /// <param name="xnum">The xnum.</param>
         /// <param name="ynum">The ynum.</param>
-        void scrollBy(int xnum, int ynum);
+        public virtual void scrollBy(int xnum, int ynum) => throw new NotImplementedException();
 
         /// <summary>
         /// Scrolls the document to the specified coordinates
         /// </summary>
         /// <param name="xpos">The xpos.</param>
         /// <param name="ypos">The ypos.</param>
-        void scrollTo(int xpos, int ypos);
+        public virtual void scrollTo(int xpos, int ypos) => throw new NotImplementedException();
 
         /// <summary>
         /// Calls a function or evaluates an expression at specified intervals (in milliseconds)
@@ -3785,7 +3789,7 @@ namespace Litehtml
         /// <param name="milliseconds">The milliseconds.</param>
         /// <param name="args">The arguments.</param>
         /// <returns></returns>
-        int setInterval(string function, int milliseconds, params object[] args);
+        public virtual int setInterval(string function, int milliseconds, params object[] args) => throw new NotImplementedException();
 
         /// <summary>
         /// Calls a function or evaluates an expression after a specified number of milliseconds
@@ -3794,12 +3798,12 @@ namespace Litehtml
         /// <param name="milliseconds">The milliseconds.</param>
         /// <param name="args">The arguments.</param>
         /// <returns></returns>
-        int setTimeout(string function, int milliseconds, params object[] args);
+        public virtual int setTimeout(string function, int milliseconds, params object[] args) => throw new NotImplementedException();
 
         /// <summary>
         /// Stops the window from loading
         /// </summary>
-        void stop();
+        public virtual void stop() => throw new NotImplementedException();
     }
 
     /// <summary>

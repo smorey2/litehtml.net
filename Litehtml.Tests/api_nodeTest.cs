@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace Litehtml
 {
-    public class nodeTest
+    public class api_nodeTest
     {
         static Document MakeDocument(string source) => document.createFromString(source.Replace("'", "\""), new container_test(), null, new context());
 
@@ -32,7 +32,7 @@ namespace Litehtml
                 Assert.AreEqual("myFunction()", x);
             }
             {
-                var x = document.getElementsByTagName("IMG")[0] as Element;
+                var x = document.getElementsByTagName("IMG")[0];
                 x.getAttributeNode("src").value = "pic_bulbon.gif";
                 Assert.AreEqual("pic_bulbon.gif", x.getAttributeNode("src").value);
             }
@@ -60,7 +60,7 @@ namespace Litehtml
 
             // https://www.w3schools.com/jsref/met_namednodemap_getnameditem.asp
             {
-                var btn = (Element)document.getElementsByTagName("BUTTON")[0];
+                var btn = document.getElementsByTagName("BUTTON")[0];
                 var x = btn.attributes.getNamedItem("onclick").value;
                 Assert.AreEqual("myFunction()", x);
             }
@@ -152,7 +152,7 @@ namespace Litehtml
 
                 void myFunction(XMLHttpRequest xml)
                 {
-                    NodeList x; int i; Document xmlDoc; string txt;
+                    NodeList<Element> x; int i; Document xmlDoc; string txt;
                     xmlDoc = xml.responseXML;
                     txt = "";
                     x = xmlDoc.getElementsByTagName("title");
@@ -185,7 +185,7 @@ Base URI: https://www.w3schools.com/xml/books_ns.xml
 
                 void myFunction(XMLHttpRequest xml)
                 {
-                    NodeList x; int i; Document xmlDoc; string txt;
+                    NodeList<Node> x; int i; Document xmlDoc; string txt;
                     xmlDoc = xml.responseXML;
                     txt = "";
                     x = xmlDoc.childNodes;
@@ -457,7 +457,7 @@ Next sibling: author = Giada De Laurentiis".Replace("\n", "<br>"), document.getE
 
                 void myFunction(XMLHttpRequest xml)
                 {
-                    NodeList x; int i; Document xmlDoc; string txt;
+                    NodeList<Element> x; int i; Document xmlDoc; string txt;
                     xmlDoc = xml.responseXML;
                     txt = "";
                     x = xmlDoc.getElementsByTagName("title");
@@ -531,7 +531,7 @@ Previous sibling: title = Everyday Italian".Replace("\n", "<br>"), document.getE
 
                 void myFunction(XMLHttpRequest xml)
                 {
-                    NodeList x; int i; Document xmlDoc; string txt;
+                    NodeList<Element> x; int i; Document xmlDoc; string txt;
                     xmlDoc = xml.responseXML;
                     txt = "";
                     x = xmlDoc.getElementsByTagName("book");
@@ -580,7 +580,7 @@ Learning XML Erik T.Ray 2003 39.95
                 {
                     var xmlDoc = xml.responseXML;
                     var newel = xmlDoc.createElement("edition");
-                    var x = (Element)xmlDoc.getElementsByTagName("book")[0];
+                    var x = xmlDoc.getElementsByTagName("book")[0];
                     x.appendChild(newel);
                     document.getElementById("demo").innerHTML =
                     x.getElementsByTagName("edition")[0].nodeName;
@@ -605,7 +605,7 @@ Learning XML Erik T.Ray 2003 39.95
 
                 void myFunction(XMLHttpRequest xml)
                 {
-                    Node x; NodeList y; Node cloneNode; int i; Document xmlDoc; string txt;
+                    Node x; NodeList<Element> y; Node cloneNode; int i; Document xmlDoc; string txt;
                     xmlDoc = xml.responseXML;
                     txt = "";
                     x = xmlDoc.getElementsByTagName("book")[0];
@@ -894,7 +894,7 @@ Book elements after: 5".Replace("\n", "<br>"), document.getElementById("demo").i
 
                 void myFunction(XMLHttpRequest xml)
                 {
-                    Element x; Node y; NodeList z; int i; Element newNode; Element newTitle; Node newText; Document xmlDoc; string txt;
+                    Element x; Node y; NodeList<Element> z; int i; Element newNode; Element newTitle; Node newText; Document xmlDoc; string txt;
                     xmlDoc = xml.responseXML;
                     txt = "";
                     x = xmlDoc.documentElement;

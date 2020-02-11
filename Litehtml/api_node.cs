@@ -36,7 +36,7 @@ namespace Litehtml
         /// <summary>
         /// Returns a collection of an element's child nodes (including text and comment nodes)
         /// </summary>
-        public abstract NodeList childNodes { get; }
+        public abstract NodeList<Node> childNodes { get; }
 
         /// <summary>
         /// Clones an element
@@ -260,7 +260,7 @@ namespace Litehtml
         /// <summary>
         /// Returns a collection of an element's child nodes (including text and comment nodes)
         /// </summary>
-        public override NodeList childNodes => new NodeList(); //: Node
+        public override NodeList<Node> childNodes => new NodeList<Node>(); //: Node
 
         /// <summary>
         /// Clones an element
@@ -467,17 +467,17 @@ namespace Litehtml
     }
 
     /// <summary>
-    /// NodeList
+    /// NodeList&gt;TNode&lt;
     /// https://www.w3schools.com/xml/dom_nodelist.asp
     /// https://www.w3schools.com/js/js_htmldom_nodelist.asp
     /// </summary>
-    public class NodeList
+    public class NodeList<TNode> where TNode : Node
     {
         readonly IList<element> items;
         public NodeList() { }
         public NodeList(IList<element> elements) => items = elements;
-        public Node this[int index] => items?[index];
-        public Node item(int index) => items?[index];
+        public TNode this[int index] => (TNode)(Node)items?[index];
+        public TNode item(int index) => (TNode)(Node)items?[index];
         public int length => items?.Count ?? 0;
     }
 
@@ -595,6 +595,6 @@ namespace Litehtml
         /// </summary>
         /// <param name="class">The class.</param>
         /// <param name="value">if set to <c>true</c> [value].</param>
-        public void toggle(string @class, bool value) { }
+        public void toggle(string @class, bool? value = null) { }
     }
 }
